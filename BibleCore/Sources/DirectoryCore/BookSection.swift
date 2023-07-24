@@ -100,7 +100,6 @@ public struct BookSectionView: View {
             WithViewStore(store, observe: { $0 }) { viewStore in
                 VStack {
                     HStack {
-                        Text(viewStore.id.description)
                         Text(viewStore.book.name)
                         Spacer()
                         Image(systemName: "chevron.down")
