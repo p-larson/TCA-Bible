@@ -56,7 +56,7 @@ public struct BookSection: ReducerProtocol {
                 return .none
             case .load(.failure(_)):
                 fatalError()
-            case .select(let book, let chapter, _, let verse):
+            case .select(_, _, _, _):
                 print(">:(")
                 return .none
             case .loadChapter(.success(let verses)):

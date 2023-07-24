@@ -5,6 +5,9 @@ import ComposableArchitecture
 
 public struct Directory: ReducerProtocol {
     
+    // Do I really need to declare an explicit public initiallizer?
+    public init() {}
+    
     public struct State: Equatable {
         var isDirectoryOpen: Bool
         var books: IdentifiedArrayOf<BookSection.State> = []
