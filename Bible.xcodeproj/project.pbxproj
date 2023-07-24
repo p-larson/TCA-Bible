@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9874C3882A6835AE00FAD33C /* BibleCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9874C3872A6835AE00FAD33C /* BibleCore */; };
 		98CEAA782A682FDE00CC4B3E /* BibleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CEAA772A682FDE00CC4B3E /* BibleApp.swift */; };
 		98CEAA7A2A682FDE00CC4B3E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CEAA792A682FDE00CC4B3E /* ContentView.swift */; };
 		98CEAA7C2A682FDF00CC4B3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98CEAA7B2A682FDF00CC4B3E /* Assets.xcassets */; };
@@ -14,6 +15,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9800055F2A68332700C04A9F /* BibleCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = BibleCore; sourceTree = "<group>"; };
+		9874C3862A6835A600FAD33C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		98CEAA742A682FDE00CC4B3E /* Bible.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bible.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98CEAA772A682FDE00CC4B3E /* BibleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleApp.swift; sourceTree = "<group>"; };
 		98CEAA792A682FDE00CC4B3E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -27,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9874C3882A6835AE00FAD33C /* BibleCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,8 +40,10 @@
 		98CEAA6B2A682FDE00CC4B3E = {
 			isa = PBXGroup;
 			children = (
+				9800055F2A68332700C04A9F /* BibleCore */,
 				98CEAA762A682FDE00CC4B3E /* Bible */,
 				98CEAA752A682FDE00CC4B3E /* Products */,
+				98CEAA872A68309500CC4B3E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +58,7 @@
 		98CEAA762A682FDE00CC4B3E /* Bible */ = {
 			isa = PBXGroup;
 			children = (
+				9874C3862A6835A600FAD33C /* Info.plist */,
 				98CEAA772A682FDE00CC4B3E /* BibleApp.swift */,
 				98CEAA792A682FDE00CC4B3E /* ContentView.swift */,
 				98CEAA7B2A682FDF00CC4B3E /* Assets.xcassets */,
@@ -67,6 +74,13 @@
 				98CEAA7F2A682FDF00CC4B3E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		98CEAA872A68309500CC4B3E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,6 +99,9 @@
 			dependencies = (
 			);
 			name = Bible;
+			packageProductDependencies = (
+				9874C3872A6835AE00FAD33C /* BibleCore */,
+			);
 			productName = Bible;
 			productReference = 98CEAA742A682FDE00CC4B3E /* Bible.app */;
 			productType = "com.apple.product-type.application";
@@ -269,6 +286,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Bible/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -307,6 +325,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Bible/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -354,6 +373,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9874C3872A6835AE00FAD33C /* BibleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BibleCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 98CEAA6C2A682FDE00CC4B3E /* Project object */;
 }
