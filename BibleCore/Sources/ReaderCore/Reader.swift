@@ -36,8 +36,6 @@ public struct Reader: Reducer {
     
     public enum Action: BindableAction, Equatable {
         case binding(_ action: BindingAction<State>)
-        case bookmark
-        case openBible
         case openDirectory
         case content(Page.Action)
         case directory(Directory.Action)
@@ -58,13 +56,12 @@ public struct Reader: Reducer {
                 return .none
             case .directory(.book(id: _, action: .select(let book, let chapter, let verses, let verse))):
                 print("selected", book.name, chapter.id, verses.count, verse.verseId, book.name)
-                
                 return .none
-            case .bookmark:
-                // Find the last reading
-                // TODO:
+            case .directory:
                 return .none
-            default:
+            case .content:
+                return .none
+            case .binding(_):
                 return .none
             }
         }
@@ -113,9 +110,6 @@ struct BookReaderView: View {
                     )
                     .navigationTitle("Books")
                 }
-            }
-            .task {
-                store.send(.bookmark)
             }
         }
     }

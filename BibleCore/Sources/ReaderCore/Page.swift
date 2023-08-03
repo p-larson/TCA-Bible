@@ -8,6 +8,16 @@ public struct Page: Reducer {
         var book: Book?
         var chapter: Chapter?
         var verses: [Verse]?
+        
+        public init(
+            book: Book? = nil,
+            chapter: Chapter? = nil,
+            verses: [Verse]? = nil
+        ) {
+            self.book = book
+            self.chapter = chapter
+            self.verses = verses
+        }
     }
     
     public enum Action: Equatable {

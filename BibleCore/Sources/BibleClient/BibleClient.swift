@@ -107,6 +107,34 @@ extension BibleClient: DependencyKey {
     )
 }
 
+extension BibleClient {
+    public static var testValue: BibleClient = Self(
+        translations: { [.mock] },
+        translation: { _ in .mock },
+        genres: { [.mock] },
+        genre: { _ in .mock },
+        books: { [.mock] },
+        book: { _ in .mock },
+        chapters: { _ in [.mock] },
+        verses: { _, _  in [.mock] },
+        verse: { _, _, _ in .mock }
+    )
+}
+
+//extension BibleClient {
+//    public static var previewValue: BibleClient  = Self(
+//        translations: <#@Sendable () async throws -> [Translation]#>,
+//        translation: <#@Sendable (TranslationID) async throws -> Translation#>,
+//        genres: <#@Sendable () async throws -> [Genre]#>,
+//        genre: <#@Sendable (GenreID) async throws -> Genre#>,
+//        books: <#@Sendable () async throws -> [Book]#>,
+//        book: <#@Sendable (BookID) async throws -> Book#>,
+//        chapters: <#@Sendable (BookID) async throws -> [Chapter]#>,
+//        verses: <#@Sendable (BookID, ChapterID) async throws -> [Verse]#>,
+//        verse: <#@Sendable (BookID, ChapterID, VerseID) async throws -> Verse#>
+//    )
+//}
+
 extension DependencyValues {
     public var bible: BibleClient {
         get {

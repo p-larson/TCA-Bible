@@ -36,6 +36,12 @@ let package = Package(
                 )
             ]
         ),
+        .testTarget(
+            name: "ReaderCoreTests",
+            dependencies: [
+                "ReaderCore",
+            ]
+        ),
         .target(
             name: "DirectoryCore",
             dependencies: [
@@ -74,15 +80,15 @@ let package = Package(
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
         ),
+        .testTarget(
+            name: "BibleClientTests",
+            dependencies: ["BibleClient"]
+        ),
         .target(
             name: "BibleCore",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
-        ),
-        .testTarget(
-            name: "BibleClientTests",
-            dependencies: ["BibleClient"]
         )
     ]
 )

@@ -16,6 +16,10 @@ public struct Genre: Equatable, Codable, Identifiable, Hashable {
         self.id = id
         self.name = name
     }
+    
+    public static var mock: Self {
+        .init(id: 0, name: "grace")
+    }
 }
 
 public struct Translation: Equatable, Codable, Identifiable, Hashable {
@@ -38,9 +42,13 @@ public struct Translation: Equatable, Codable, Identifiable, Hashable {
         self.version = version
         self.infoUrl = infoUrl
     }
+    
+    public static var mock: Self {
+        .init(id: 0, language: "en", abbreviation: "NIV", version: "1.0", infoUrl: "bible.com")
+    }
 }
 
-public struct Book: Equatable, Codable, Identifiable , Hashable{
+public struct Book: Equatable, Codable, Identifiable, Hashable {
     public let id: BookID
     public let name: String
     public let testament: String
@@ -54,6 +62,10 @@ public struct Book: Equatable, Codable, Identifiable , Hashable{
         self.name = name
         self.testament = testament
     }
+    
+    public static var mock: Self {
+        .init(id: 1, name: "Genesis", testament: "ot")
+    }
 }
 
 public struct Chapter: Equatable, Codable, Identifiable, Hashable {
@@ -63,6 +75,10 @@ public struct Chapter: Equatable, Codable, Identifiable, Hashable {
         id: ChapterID
     ) {
         self.id = id
+    }
+    
+    public static var mock: Self {
+        .init(id: 1)
     }
 }
 
@@ -85,5 +101,9 @@ public struct Verse: Equatable, Codable, Identifiable, Hashable {
         self.chapterId = chapterId
         self.verseId = verseId
         self.verse = verse
+    }
+    
+    public static var mock: Self {
+        .init(id: 1, book: .mock, chapterId: 1, verseId: 1, verse: "In the beginning God created the heavens and the earth.")
     }
 }
