@@ -3,18 +3,24 @@ import BibleCore
 import BibleClient
 import ComposableArchitecture
 
-public struct Directory: ReducerProtocol {
+/*
+ 
+ 
+ 
+ */
+
+public struct Directory: Reducer {
     
     // Do I really need to declare an explicit public initiallizer?
     public init() {}
     
     public struct State: Equatable {
         var isDirectoryOpen: Bool
-        var books: IdentifiedArrayOf<BookSection.State> = []
+        var books: IdentifiedArrayOf<Section.State> = []
         
         public init(
             isDirectoryOpen: Bool,
-            books: IdentifiedArrayOf<BookSection.State>
+            books: IdentifiedArrayOf<Section.State>
         ) {
             self.isDirectoryOpen = isDirectoryOpen
             self.books = books
@@ -24,12 +30,12 @@ public struct Directory: ReducerProtocol {
     public enum Action: Equatable {
         case task
         case load(TaskResult<[Book]>)
-        case book(id: UUID, action: BookSection.Action)
+        case book(id: UUID, action: Section.Action)
     }
     
     @Dependency(\.bible) var bible: BibleClient
     
-    public var body: some ReducerProtocolOf<Self> {
+    public var body: some ReducerOf<Self> {
         
         Reduce { state, action in
             switch action {
@@ -42,7 +48,7 @@ public struct Directory: ReducerProtocol {
             case .load(.success(let books)):
                 state.books = IdentifiedArray(
                     uniqueElements: books.map { book in
-                        BookSection.State(book: book)
+                        Section.State(book: book)
                     }
                 )
                 return .none
@@ -57,7 +63,7 @@ public struct Directory: ReducerProtocol {
             }
         }
         .forEach(\.books, action: /Action.book(id:action:)) {
-            BookSection()
+            Section()
         }
     }
 }

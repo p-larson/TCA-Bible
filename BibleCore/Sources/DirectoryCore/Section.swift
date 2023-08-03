@@ -3,7 +3,7 @@ import BibleClient
 import SwiftUI
 import ComposableArchitecture
 
-public struct BookSection: ReducerProtocol {
+public struct Section: Reducer {
     public struct State: Equatable, Hashable, Identifiable {
         var book: Book
         var chapters: [Chapter] = []
@@ -27,7 +27,7 @@ public struct BookSection: ReducerProtocol {
     
     @Dependency(\.bible) var bible: BibleClient
     
-    public var body: some ReducerProtocolOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .toggle:
@@ -93,7 +93,7 @@ fileprivate struct IndexView: View {
 }
 
 public struct BookSectionView: View {
-    let store: StoreOf<BookSection>
+    let store: StoreOf<Section>
 
     public var body: some View {
         NavigationStack {
@@ -139,7 +139,12 @@ public struct BookSectionView: View {
                                 ForEach(verses) { verse in
                                     Button {
                                         viewStore.send(
-                                            .select(viewStore.book, chapter, viewStore.verses!, verse)
+                                            .select(
+                                                viewStore.book,
+                                                chapter,
+                                                viewStore.verses!,
+                                                verse
+                                            )
                                         )
                                     } label: {
                                         IndexView(index: verse.verseId)
@@ -162,7 +167,7 @@ public struct BookSectionView: View {
     }
 }
 
-extension BookSection.State {
+extension Section.State {
     static let mock = Self(
         book: Book(id: 1, name: "Genesis", testament: "ot")
     )
@@ -172,10 +177,10 @@ struct BookSectionView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ScrollView {
-                BookSectionView(store: StoreOf<BookSection>(
+                BookSectionView(store: StoreOf<Section>(
                     initialState: .mock,
                     reducer: {
-                        BookSection()//._printChanges()
+                        Section()//._printChanges()
                     })
                 )
             }

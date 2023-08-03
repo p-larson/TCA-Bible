@@ -16,11 +16,11 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/pointfreeco/swift-composable-architecture",
-            from: "0.56.0"
+            from: "1.0.0"
         ),
         .package(
             url: "https://github.com/pointfreeco/swift-case-paths",
-            from: "0.14.1"
+            from: "1.0.0"
         )
     ],
     targets: [
@@ -45,6 +45,17 @@ let package = Package(
                     name: "ComposableArchitecture",
                     package: "swift-composable-architecture"
                 )
+            ]
+        ),
+        .testTarget(
+            name: "DirectoryCoreTests",
+            dependencies: [
+                "DirectoryCore",
+                
+                    .product(
+                        name: "ComposableArchitecture",
+                        package: "swift-composable-architecture"
+                    )
             ]
         ),
         .target(

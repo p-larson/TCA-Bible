@@ -5,9 +5,9 @@ import SwiftUI
 import ComposableArchitecture
 import DirectoryCore
 
-public struct BookReader: ReducerProtocol {
+public struct Reader: Reducer {
     public struct State: Equatable {
-        var content = Content.State()
+        var content = Page.State()
         var directory: Directory.State = Directory.State(
             isDirectoryOpen: true,
             books: []
@@ -39,17 +39,17 @@ public struct BookReader: ReducerProtocol {
         case bookmark
         case openBible
         case openDirectory
-        case content(Content.Action)
+        case content(Page.Action)
         case directory(Directory.Action)
     }
     
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         BindingReducer()
         Scope(state: \.directory, action: /Action.directory) {
             Directory()
         }
         Scope(state: \.content, action: /Action.content) {
-            Content()
+            Page()
         }
         Reduce<State, Action> { state, action in
             switch action {
@@ -57,7 +57,7 @@ public struct BookReader: ReducerProtocol {
                 state.isDirectoryOpen = true
                 return .none
             case .directory(.book(id: _, action: .select(let book, let chapter, let verses, let verse))):
-                print("selected", book.id, chapter.id, verses.count, verse.id, book.name)
+                print("selected", book.name, chapter.id, verses.count, verse.verseId, book.name)
                 
                 return .none
             case .bookmark:
@@ -72,7 +72,7 @@ public struct BookReader: ReducerProtocol {
 }
 
 struct BookReaderView: View {
-    let store: StoreOf<BookReader>
+    let store: StoreOf<Reader>
 
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
@@ -90,13 +90,15 @@ struct BookReaderView: View {
                     }
                     .buttonStyle(.bordered)
 
+                    Spacer()
                 }
+                .padding(.horizontal)
                 Spacer()
                 ScrollView {
                     ContentView(
                         store: store.scope(
                             state: \.content,
-                            action: BookReader.Action.content
+                            action: Reader.Action.content
                         )
                     )
                 }
@@ -106,7 +108,7 @@ struct BookReaderView: View {
                     DirectoryView(
                         store: store.scope(
                             state: \.directory,
-                            action: BookReader.Action.directory
+                            action: Reader.Action.directory
                         )
                     )
                     .navigationTitle("Books")
@@ -119,8 +121,8 @@ struct BookReaderView: View {
     }
 }
 
-extension BookReader.State {
-    static let mock = BookReader.State(
+extension Reader.State {
+    static let mock = Reader.State(
         isDirectoryOpen: false
     )
 }
@@ -131,7 +133,7 @@ struct BookReaderView_Previews: PreviewProvider {
             store: Store(
                 initialState: .mock
             ) {
-                BookReader()
+                Reader()
             }
         )
         .previewDevice("iPhone 14")

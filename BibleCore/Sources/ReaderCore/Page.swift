@@ -3,7 +3,7 @@ import BibleClient
 import BibleCore
 import ComposableArchitecture
 
-public struct Content: ReducerProtocol {
+public struct Page: Reducer {
     public struct State: Equatable {
         var book: Book?
         var chapter: Chapter?
@@ -20,7 +20,7 @@ public struct Content: ReducerProtocol {
     
     @Dependency(\.bible) var bible: BibleClient
     
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .task:
@@ -170,9 +170,9 @@ public struct Content: ReducerProtocol {
 }
 
 struct ContentView: View {
-    let store: StoreOf<Content>
+    let store: StoreOf<Page>
 
-    func swipe(store: ViewStoreOf<Content>) -> some Gesture {
+    func swipe(store: ViewStoreOf<Page>) -> some Gesture {
         DragGesture()
             .onEnded { value in
                 if value.translation.width < 0 {
@@ -208,8 +208,8 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(store: Store(initialState: Content.State()) {
-            Content()
+        ContentView(store: Store(initialState: Page.State()) {
+            Page()
                 ._printChanges()
         })
         .previewDevice("iPhone 14")
