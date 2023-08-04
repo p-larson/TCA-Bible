@@ -8,6 +8,7 @@
 import XCTest
 import ComposableArchitecture
 import BibleCore
+import DirectoryCore
 @testable import ReaderCore
 
 final class ReaderTests: XCTestCase {
@@ -19,6 +20,15 @@ final class ReaderTests: XCTestCase {
             }
         )
         
-        await store.send(.openDirectory)
+        await store.send(.openDirectory) {
+            $0.isDirectoryOpen = true
+        }
+        
+        await store.send(.directory(.task))
+        
+        
+        await store.receive(.directory(.load(.success([.mock]))), timeout: .seconds(10)) {
+            $0.directory.sections = [.mock]
+        }
     }
 }

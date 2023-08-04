@@ -7,6 +7,7 @@
 
 import XCTest
 import ComposableArchitecture
+import BibleClient
 import BibleCore
 @testable import DirectoryCore
 
@@ -34,6 +35,24 @@ final class DirectoryCoreTests: XCTestCase {
         await store.send(.toggle) {
             $0.isExpanded = false
         }
+    }
+    
+    @MainActor func testSomething() async {
+        let store = TestStore(initialState: Directory.State.mock, reducer:  {
+            Directory()
+        }) {
+            // Probably shouldn't do this right?
+            $0.bible = BibleClient.testValue
+        }
+        
+        await store.send(.task)
+        
+        await store.receive(.load(.success(.mock)), timeout: .seconds(5))
+        
+        guard let store.state.sections.first else {
+            XCTFail("Expected loaded sections")
+        }
+//        await store.send(.book(id: <#T##BookID#>, action: <#T##Section.Action#>))
     }
 }
 

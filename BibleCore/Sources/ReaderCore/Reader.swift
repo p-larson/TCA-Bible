@@ -54,8 +54,11 @@ public struct Reader: Reducer {
             case .openDirectory:
                 state.isDirectoryOpen = true
                 return .none
-            case .directory(.book(id: _, action: .select(let book, let chapter, let verses, let verse))):
-                print("selected", book.name, chapter.id, verses.count, verse.verseId, book.name)
+            case .directory(.book(id: let id, action: .select(let book, let chapter, let verses, let verse))):
+//                print("selected", book.name, chapter.id, verses.count, verse.verseId, book.name)
+                
+                print(state.directory.sections[id: id]?.book.name)
+                
                 return .none
             case .directory:
                 return .none

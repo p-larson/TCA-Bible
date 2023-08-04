@@ -5,12 +5,15 @@ import ComposableArchitecture
 
 public struct Section: Reducer {
     public struct State: Equatable, Hashable, Identifiable {
-        var book: Book
-        var chapters: [Chapter] = []
-        var chapter: Chapter? = nil
-        var verses: [Verse]? = nil
-        var isExpanded: Bool = false
-        public let id = UUID()
+        public var book: Book
+        public var chapters: [Chapter] = []
+        public var chapter: Chapter? = nil
+        public var verses: [Verse]? = nil
+        public var isExpanded: Bool = false
+        
+        public var id: BookID {
+            book.id
+        }
         
         public init(book: Book) {
             self.book = book
@@ -56,8 +59,8 @@ public struct Section: Reducer {
                 return .none
             case .load(.failure(_)):
                 fatalError()
-            case .select(_, _, _, _):
-                print(">:(")
+            case .select(let book, _, _, _):
+                print(#file, book.name)
                 return .none
             case .loadChapter(.success(let verses)):
                 state.verses = verses
@@ -94,93 +97,92 @@ fileprivate struct IndexView: View {
 
 public struct BookSectionView: View {
     let store: StoreOf<Section>
-
+    
     public var body: some View {
-        NavigationStack {
-            WithViewStore(store, observe: { $0 }) { viewStore in
-                VStack {
-                    HStack {
-                        Text(viewStore.book.name)
-                        Spacer()
-                        Image(systemName: "chevron.down")
-                            .imageScale(.small)
-                            .rotationEffect(.degrees(viewStore.isExpanded ? 180 : 0))
-                    }
-                    .frame(height: 40, alignment: .bottom)
-                    
-                    if viewStore.isExpanded {
-                        if viewStore.chapters.isEmpty {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                        } else {
-                            LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
-                                ForEach(viewStore.chapters) { chapter in
-                                    NavigationLink(value: chapter) {
-                                        IndexView(index: chapter.id as Int)
-                                    }
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            VStack {
+                HStack {
+                    Text(viewStore.book.name)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .imageScale(.small)
+                        .rotationEffect(.degrees(viewStore.isExpanded ? 180 : 0))
+                }
+                .frame(height: 40, alignment: .bottom)
+                
+                if viewStore.isExpanded {
+                    if viewStore.chapters.isEmpty {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                    } else {
+                        LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
+                            ForEach(viewStore.chapters) { chapter in
+                                NavigationLink(value: chapter) {
+                                    IndexView(index: chapter.id as Int)
                                 }
                             }
                         }
                     }
                 }
-                .padding(viewStore.isExpanded ? [.horizontal, .bottom] : [.horizontal])
-                .onTapGesture {
-                    viewStore.send(.toggle, animation: .easeOut(duration: 0.3))
+            }
+            .padding(viewStore.isExpanded ? [.horizontal, .bottom] : [.horizontal])
+            .onTapGesture {
+                viewStore.send(.toggle, animation: .easeOut(duration: 0.3))
+            }
+            .background {
+                if viewStore.isExpanded {
+                    Color.accentColor.opacity(15 / 100)
                 }
-                .background {
-                    if viewStore.isExpanded {
-                        Color.accentColor.opacity(15 / 100)
-                    }
-                }
-                .navigationDestination(for: Chapter.self) { chapter in
-                    ScrollView {
-                        if let verses = viewStore.verses, !verses.isEmpty {
-                            LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
-                                ForEach(verses) { verse in
-                                    Button {
-                                        viewStore.send(
-                                            .select(
-                                                viewStore.book,
-                                                chapter,
-                                                viewStore.verses!,
-                                                verse
-                                            )
+            }
+            .navigationDestination(for: Chapter.self) { chapter in
+                ScrollView {
+                    if let verses = viewStore.verses, !verses.isEmpty {
+                        LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
+                            ForEach(verses) { verse in
+                                Button {
+                                    viewStore.send(
+                                        .select(
+                                            viewStore.book,
+                                            chapter,
+                                            viewStore.verses!,
+                                            verse
                                         )
-                                    } label: {
-                                        IndexView(index: verse.verseId)
-                                    }
-                                    
+                                    )
+                                } label: {
+                                    IndexView(index: verse.verseId)
                                 }
+                                
                             }
-                        } else {
-                            ProgressView()
-                                .progressViewStyle(.circular)
                         }
+                    } else {
+                        ProgressView()
+                            .progressViewStyle(.circular)
                     }
-                    .task {
-                        viewStore.send(.openChapter(chapter))
-                    }
-                    .navigationTitle("Select Verse")
                 }
+                .task {
+                    viewStore.send(.openChapter(chapter))
+                }
+                .navigationTitle("Select Verse")
             }
         }
     }
 }
 
-extension Section.State {
+public extension Section.State {
     static let mock = Self(
-        book: Book(id: 1, name: "Genesis", testament: "ot")
+        book: .mock
     )
 }
 
-struct BookSectionView_Previews: PreviewProvider {
+struct SectionView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ScrollView {
                 BookSectionView(store: StoreOf<Section>(
                     initialState: .mock,
                     reducer: {
-                        Section()//._printChanges()
+                        Section()
+                            ._printChanges()
                     })
                 )
             }

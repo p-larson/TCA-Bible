@@ -3,34 +3,28 @@ import BibleCore
 import BibleClient
 import ComposableArchitecture
 
-/*
- 
- 
- 
- */
-
 public struct Directory: Reducer {
     
     // Do I really need to declare an explicit public initiallizer?
     public init() {}
     
     public struct State: Equatable {
-        var isDirectoryOpen: Bool
-        var books: IdentifiedArrayOf<Section.State> = []
+        public var isDirectoryOpen: Bool
+        public var sections: IdentifiedArrayOf<Section.State> = []
         
         public init(
             isDirectoryOpen: Bool,
             books: IdentifiedArrayOf<Section.State>
         ) {
             self.isDirectoryOpen = isDirectoryOpen
-            self.books = books
+            self.sections = books
         }
     }
     
     public enum Action: Equatable {
         case task
         case load(TaskResult<[Book]>)
-        case book(id: UUID, action: Section.Action)
+        case book(id: BookID, action: Section.Action)
     }
     
     @Dependency(\.bible) var bible: BibleClient
@@ -46,23 +40,21 @@ public struct Directory: Reducer {
                     }))
                 }
             case .load(.success(let books)):
-                state.books = IdentifiedArray(
-                    uniqueElements: books.map { book in
-                        Section.State(book: book)
-                    }
+                state.sections = IdentifiedArray(
+                    uniqueElements: books.map(Section.State.init(book:))
                 )
+                
                 return .none
             case .load(.failure(_)):
                 fatalError()
-                
-            case .book(id: let id, action: .select(let book, let chapter, let verses, let verse)):
-                print("child selected", id, book.id, chapter.id, verses.count, verse.id)
+            case .book(id: let id, action: .select(let book, _, _, _)):
+                print(id, #file, book.name)
                 return .none
             default:
                 return .none
             }
         }
-        .forEach(\.books, action: /Action.book(id:action:)) {
+        .forEach(\.sections, action: /Action.book(id:action:)) {
             Section()
         }
     }
@@ -76,19 +68,19 @@ public struct DirectoryView: View {
     }
     
     public var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
+        WithViewStore(store, observe: \.sections) { viewStore in
             ScrollView {
-                if viewStore.books.isEmpty {
+                if viewStore.isEmpty {
                     ProgressView()
                         .progressViewStyle(.circular)
                 } else {
                     ForEachStore(
                         store.scope(
-                            state: \.books,
+                            state: \.sections,
                             action: Directory.Action.book(id:action:)
                         ),
                         content: BookSectionView.init(store:)
-                    )
+                   )
                 }
             }
             .task {
@@ -110,7 +102,7 @@ struct DirectoryView_Previews: PreviewProvider {
         NavigationStack {
             DirectoryView(
                 store: Store(initialState: .mock) {
-                    Directory()//._printChanges()
+                    Directory()
                 }
             )
         }

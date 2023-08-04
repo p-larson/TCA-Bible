@@ -42,9 +42,17 @@ public struct Translation: Equatable, Codable, Identifiable, Hashable {
         self.version = version
         self.infoUrl = infoUrl
     }
-    
-    public static var mock: Self {
+}
+
+public extension Translation {
+    static var mock: Self {
         .init(id: 0, language: "en", abbreviation: "NIV", version: "1.0", infoUrl: "bible.com")
+    }
+}
+
+public extension Array where Element == Translation {
+    static var mock: [Translation] {
+        [.mock]
     }
 }
 
@@ -62,9 +70,25 @@ public struct Book: Equatable, Codable, Identifiable, Hashable {
         self.name = name
         self.testament = testament
     }
-    
-    public static var mock: Self {
+}
+
+public extension Book {
+    static var genesis: Self {
         .init(id: 1, name: "Genesis", testament: "ot")
+    }
+    
+    static var exodus: Self {
+        .init(id: 2, name: "Exodus", testament: "ot")
+    }
+    
+    static var leviticus: Self {
+        .init(id: 3, name: "Leviticus", testament: "ot")
+    }
+}
+
+public extension Array where Element == Book {
+    static var mock: [Book] {
+        [.genesis, .exodus, .leviticus]
     }
 }
 
@@ -76,8 +100,10 @@ public struct Chapter: Equatable, Codable, Identifiable, Hashable {
     ) {
         self.id = id
     }
-    
-    public static var mock: Self {
+}
+
+public extension Chapter {
+    static var mock: Self {
         .init(id: 1)
     }
 }
@@ -102,8 +128,10 @@ public struct Verse: Equatable, Codable, Identifiable, Hashable {
         self.verseId = verseId
         self.verse = verse
     }
-    
-    public static var mock: Self {
-        .init(id: 1, book: .mock, chapterId: 1, verseId: 1, verse: "In the beginning God created the heavens and the earth.")
+}
+
+public extension Verse {
+    static var mock: Self {
+        .init(id: 1, book: .genesis, chapterId: 1, verseId: 1, verse: "In the beginning God created the heavens and the earth.")
     }
 }
