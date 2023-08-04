@@ -11,11 +11,11 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-latest
-
     steps:
     - uses: actions/checkout@v3
+    - name: BibleCore
+      run: cd BibleCore
     - name: Build
       run: swift build -v
     - name: Run tests
