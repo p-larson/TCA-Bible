@@ -8,21 +8,25 @@ public struct Page: Reducer {
         var book: Book?
         var chapter: Chapter?
         var verses: [Verse]?
+        var verse: Verse? = nil
         
         public init(
             book: Book? = nil,
             chapter: Chapter? = nil,
-            verses: [Verse]? = nil
+            verses: [Verse]? = nil,
+            verse: Verse? = nil
         ) {
             self.book = book
             self.chapter = chapter
             self.verses = verses
+            self.verse = verse
         }
     }
     
     public enum Action: Equatable {
         case task
-        case open(Book, Chapter, [Verse])
+        case open(Book, Chapter, [Verse], focused: Verse?)
+        case select(Verse)
         case paginateChapter(forward: Bool)
         case paginateBook(forward: Bool)
         case clear
@@ -53,7 +57,7 @@ public struct Page: Reducer {
                     
                     let verses = try await self.bible.verses(book.id, chapter.id)
                     
-                    await send(.open(book, chapter, verses))
+                    await send(.open(book, chapter, verses, focused: nil))
                 }
             case .clear:
                 state.verses = nil
@@ -75,7 +79,7 @@ public struct Page: Reducer {
                         let newChapter = chapters[chapters.index(after: index)]
                         let verses = try await bible.verses(book.id, newChapter.id)
                         
-                        await send(.open(book, newChapter, verses))
+                        await send(.open(book, newChapter, verses, focused: nil))
                         
                     } else {
                         await send(.paginateBook(forward: true))
@@ -111,7 +115,7 @@ public struct Page: Reducer {
                         
                         let verses = try await bible.verses(nextBook.id, firstChapter.id)
                         
-                        await send(.open(nextBook, firstChapter, verses))
+                        await send(.open(nextBook, firstChapter, verses, focused: nil))
                     }
                 }
             case .paginateChapter(forward: false):
@@ -127,13 +131,13 @@ public struct Page: Reducer {
                     let chapters = try await bible.chapters(book.id)
                     
                     if chapters.first != chapter, let index = chapters.firstIndex(of: chapter) {
-                        let newChapter = chapters[chapters.index(after: index)]
+                        let newChapter = chapters[chapters.index(before: index)]
                         let verses = try await bible.verses(book.id, newChapter.id)
                         
-                        await send(.open(book, newChapter, verses))
+                        await send(.open(book, newChapter, verses, focused: nil))
                         
                     } else {
-                        await send(.paginateBook(forward: true))
+                        await send(.paginateBook(forward: false))
                     }
                 }
             case .paginateBook(forward: false):
@@ -160,19 +164,24 @@ public struct Page: Reducer {
                     if let nextBook = nextBook {
                         let chapters = try await bible.chapters(nextBook.id)
                         
-                        guard let lastChapter = chapters.first else {
+                        guard let lastChapter = chapters.last else {
                             return
                         }
                         
                         let verses = try await bible.verses(nextBook.id, lastChapter.id)
                         
-                        await send(.open(nextBook, lastChapter, verses))
+                        await send(.open(nextBook, lastChapter, verses, focused: nil))
                     }
                 }
-            case .open(let book, let chapter, let verses):
+            case .open(let book, let chapter, let verses, let verse):
+                print(book.name, chapter.id)
                 state.book = book
                 state.chapter = chapter
                 state.verses = verses
+                state.verse = verse
+                return .none
+            case .select(let verse):
+                state.verse = verse
                 return .none
             }
         }
@@ -196,16 +205,32 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             ScrollView {
-                if let verses = viewStore.verses {
-                    LazyVStack {
-                        ForEach(verses) { content in
-                            Text(content.verse)
+                ScrollViewReader { reader in
+                    if let verses = viewStore.verses {
+                        LazyVStack(alignment: .leading) {
+                            ForEach(verses) { (content: Verse) in
+                                HStack(alignment: .top, spacing: 8) {
+                                    Text(content.verseId.description)
+                                        .bold()
+                                    Text(content.verse)
+                                }
+                                    .frame(alignment: .top)
+                                    .onTapGesture {
+                                        viewStore.send(.select(content))
+                                    }
+                                    .id(content.id)
+                            }
+                            .onChange(of: viewStore.verse) { newValue in
+                                withAnimation(.easeOut(duration: 0.3)) {
+                                    reader.scrollTo(newValue?.id, anchor: .top)
+                                }
+                            }
                         }
+                        .padding(.horizontal)
+                    } else {
+                        ProgressView()
+                            .progressViewStyle(.circular)
                     }
-                    .padding(.horizontal)
-                } else {
-                    ProgressView()
-                        .progressViewStyle(.circular)
                 }
             }
             .task {
@@ -220,7 +245,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView(store: Store(initialState: Page.State()) {
             Page()
-                ._printChanges()
         })
         .previewDevice("iPhone 14")
     }

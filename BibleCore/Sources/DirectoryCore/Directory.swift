@@ -8,9 +8,16 @@ public struct Directory: Reducer {
     // Do I really need to declare an explicit public initiallizer?
     public init() {}
     
+    public enum SortFilter: CaseIterable {
+        case traditional
+        case alphabetical
+    }
+    
     public struct State: Equatable {
         public var isDirectoryOpen: Bool
         public var sections: IdentifiedArrayOf<Section.State> = []
+        public var focused: Book.ID? = nil
+        @BindingState public var sorted: SortFilter = .traditional
         
         public init(
             isDirectoryOpen: Bool,
@@ -21,17 +28,18 @@ public struct Directory: Reducer {
         }
     }
     
-    public enum Action: Equatable {
+    public enum Action: Equatable, BindableAction {
         case task
         case load(TaskResult<[Book]>)
         case book(id: BookID, action: Section.Action)
+        case binding(_ action: BindingAction<State>)
     }
     
     @Dependency(\.bible) var bible: BibleClient
     
     public var body: some ReducerOf<Self> {
-        
-        Reduce { state, action in
+        BindingReducer()
+        Reduce<State, Action> { state, action in
             switch action {
             case .task:
                 return .run { send in
@@ -47,10 +55,28 @@ public struct Directory: Reducer {
                 return .none
             case .load(.failure(_)):
                 fatalError()
-            case .book(id: let id, action: .select(let book, _, _, _)):
-                print(id, #file, book.name)
+            case .book(id: let id, action: .toggle):
+                // Close all other sections that are opened that aren't `id`
+                for section in state.sections where section.id != id && section.isExpanded {
+                    state.sections[id: section.id]?.isExpanded.toggle()
+                }
+                
+                state.focused = state.sections[id:id]?.isExpanded ?? false ? id : nil
+                
                 return .none
-            default:
+            case .binding(.set(\.$sorted, .traditional)):
+                state.sections.sort { s1, s2 in
+                    s1.id < s2.id
+                }
+                return .none
+            case .binding(.set(\.$sorted, .alphabetical)):
+                state.sections.sort { s1, s2 in
+                    s1.book.name < s2.book.name
+                }
+                return .none
+            case .binding:
+                return .none
+            case .book:
                 return .none
             }
         }
@@ -61,6 +87,7 @@ public struct Directory: Reducer {
 }
 
 public struct DirectoryView: View {
+
     let store: StoreOf<Directory>
     
     public init(store: StoreOf<Directory>) {
@@ -68,19 +95,40 @@ public struct DirectoryView: View {
     }
     
     public var body: some View {
-        WithViewStore(store, observe: \.sections) { viewStore in
-            ScrollView {
-                if viewStore.isEmpty {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                } else {
-                    ForEachStore(
-                        store.scope(
-                            state: \.sections,
-                            action: Directory.Action.book(id:action:)
-                        ),
-                        content: BookSectionView.init(store:)
-                   )
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            NavigationStack {
+                VStack {
+                    ScrollView {
+                        if viewStore.sections.isEmpty {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                        } else {
+                            ScrollViewReader { reader in
+                                ForEachStore(
+                                    store.scope(
+                                        state: \.sections,
+                                        action: Directory.Action.book(id:action:)
+                                    ),
+                                    content: BookSectionView.init(store:)
+                                )
+                                .onChange(of: viewStore.focused) { newValue in
+                                    withAnimation(.easeOut(duration: 0.3)) {
+                                        reader.scrollTo(newValue, anchor: .top)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Picker(selection: viewStore.$sorted) {
+                        ForEach(Directory.SortFilter.allCases, id: \.self) {
+                            Text(String(describing: $0).capitalized)
+                        }
+                    } label: {
+                        EmptyView()
+                    }
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
                 }
             }
             .task {
@@ -99,13 +147,11 @@ extension Directory.State {
 
 struct DirectoryView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
-            DirectoryView(
-                store: Store(initialState: .mock) {
-                    Directory()
-                }
-            )
-        }
+        DirectoryView(
+            store: Store(initialState: .mock) {
+                Directory()
+            }
+        )
         .previewDevice("iPhone 14")
     }
 }

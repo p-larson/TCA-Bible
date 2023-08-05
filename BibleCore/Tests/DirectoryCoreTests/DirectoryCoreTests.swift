@@ -37,22 +37,37 @@ final class DirectoryCoreTests: XCTestCase {
         }
     }
     
-    @MainActor func testSomething() async {
+    @MainActor func testOpenAnotherBook() async {
         let store = TestStore(initialState: Directory.State.mock, reducer:  {
             Directory()
-        }) {
-            // Probably shouldn't do this right?
-            $0.bible = BibleClient.testValue
-        }
+        })
         
         await store.send(.task)
         
-        await store.receive(.load(.success(.mock)), timeout: .seconds(5))
-        
-        guard let store.state.sections.first else {
-            XCTFail("Expected loaded sections")
+        await store.receive(.load(.success(.mock))) {
+            $0.sections = IdentifiedArray(
+                uniqueElements: [Book].mock.map(Section.State.init(book:))
+            )
         }
-//        await store.send(.book(id: <#T##BookID#>, action: <#T##Section.Action#>))
+        
+        await store.send(.book(id: Book.genesis.id, action: .toggle)) {
+            $0.sections[id: Book.genesis.id]?.isExpanded = true
+            $0.focused = Book.genesis.id
+        }
+        
+        await store.receive(.book(id: Book.genesis.id, action: .load(.success(.mock)))) {
+            $0.sections[id: Book.genesis.id]?.chapters = .mock
+        }
+        
+        await store.send(.book(id: Book.genesis.id, action: .openChapter(.mock))) {
+            $0.sections[id: Book.genesis.id]?.chapter = .mock
+        }
+        
+        await store.receive(.book(id: Book.genesis.id, action: .loadChapter(.success(.mock)))) {
+            $0.sections[id: Book.genesis.id]?.verses = .mock
+        }
+        
+//        await store.send(.book(id: Book.genesis.id, action: .select))
     }
 }
 

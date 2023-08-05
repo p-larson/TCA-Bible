@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		984479E22A7DACA000B483B3 /* ReaderCore in Frameworks */ = {isa = PBXBuildFile; productRef = 984479E12A7DACA000B483B3 /* ReaderCore */; };
+		984479E42A7DACA300B483B3 /* BibleClient in Frameworks */ = {isa = PBXBuildFile; productRef = 984479E32A7DACA300B483B3 /* BibleClient */; };
+		984479E62A7DACAA00B483B3 /* DirectoryCore in Frameworks */ = {isa = PBXBuildFile; productRef = 984479E52A7DACAA00B483B3 /* DirectoryCore */; };
 		9874C3882A6835AE00FAD33C /* BibleCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9874C3872A6835AE00FAD33C /* BibleCore */; };
 		98CEAA782A682FDE00CC4B3E /* BibleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CEAA772A682FDE00CC4B3E /* BibleApp.swift */; };
 		98CEAA7A2A682FDE00CC4B3E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CEAA792A682FDE00CC4B3E /* ContentView.swift */; };
@@ -30,7 +33,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				984479E22A7DACA000B483B3 /* ReaderCore in Frameworks */,
 				9874C3882A6835AE00FAD33C /* BibleCore in Frameworks */,
+				984479E42A7DACA300B483B3 /* BibleClient in Frameworks */,
+				984479E62A7DACAA00B483B3 /* DirectoryCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +107,9 @@
 			name = Bible;
 			packageProductDependencies = (
 				9874C3872A6835AE00FAD33C /* BibleCore */,
+				984479E12A7DACA000B483B3 /* ReaderCore */,
+				984479E32A7DACA300B483B3 /* BibleClient */,
+				984479E52A7DACAA00B483B3 /* DirectoryCore */,
 			);
 			productName = Bible;
 			productReference = 98CEAA742A682FDE00CC4B3E /* Bible.app */;
@@ -375,6 +384,18 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		984479E12A7DACA000B483B3 /* ReaderCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ReaderCore;
+		};
+		984479E32A7DACA300B483B3 /* BibleClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BibleClient;
+		};
+		984479E52A7DACAA00B483B3 /* DirectoryCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DirectoryCore;
+		};
 		9874C3872A6835AE00FAD33C /* BibleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BibleCore;

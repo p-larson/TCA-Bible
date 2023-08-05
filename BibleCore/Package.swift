@@ -10,16 +10,11 @@ let package = Package(
         .library(name: "BibleClient", targets: ["BibleClient"]),
         .library(name: "BibleCore", targets: ["BibleCore"]),
         .library(name: "ReaderCore", targets: ["ReaderCore"]),
-        .library(name: "ComposableTools", targets: ["ComposableTools"]),
         .library(name: "DirectoryCore", targets: ["DirectoryCore"]),
     ],
     dependencies: [
         .package(
             url: "https://github.com/pointfreeco/swift-composable-architecture",
-            from: "1.0.0"
-        ),
-        .package(
-            url: "https://github.com/pointfreeco/swift-case-paths",
             from: "1.0.0"
         )
     ],
@@ -62,15 +57,6 @@ let package = Package(
                         name: "ComposableArchitecture",
                         package: "swift-composable-architecture"
                     )
-            ]
-        ),
-        .target(
-            name: "ComposableTools",
-            dependencies: [
-                .product(
-                    name: "ComposableArchitecture",
-                    package: "swift-composable-architecture"
-                )
             ]
         ),
         .target(

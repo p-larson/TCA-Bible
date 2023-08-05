@@ -102,6 +102,12 @@ public struct Chapter: Equatable, Codable, Identifiable, Hashable {
     }
 }
 
+public extension Array where Element == Chapter {
+    static var mock: [Chapter] {
+        [.mock]
+    }
+}
+
 public extension Chapter {
     static var mock: Self {
         .init(id: 1)
@@ -133,5 +139,11 @@ public struct Verse: Equatable, Codable, Identifiable, Hashable {
 public extension Verse {
     static var mock: Self {
         .init(id: 1, book: .genesis, chapterId: 1, verseId: 1, verse: "In the beginning God created the heavens and the earth.")
+    }
+}
+
+public extension Array where Element == Verse {
+    static var mock: [Verse] {
+        [.mock]
     }
 }

@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import ReaderCore
+import ComposableArchitecture
 
 @main
 struct BibleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ReaderView(
+                store: Store(initialState: Reader.State()) {
+                    Reader()
+                        ._printChanges()
+                }
+            )
         }
+        
     }
 }

@@ -59,8 +59,7 @@ public struct Section: Reducer {
                 return .none
             case .load(.failure(_)):
                 fatalError()
-            case .select(let book, _, _, _):
-                print(#file, book.name)
+            case .select:
                 return .none
             case .loadChapter(.success(let verses)):
                 state.verses = verses
@@ -97,80 +96,87 @@ fileprivate struct IndexView: View {
 
 public struct BookSectionView: View {
     let store: StoreOf<Section>
+    @ObservedObject var viewStore: ViewStoreOf<Section>
+    
+    init(store: StoreOf<Section>) {
+        self.store = store
+        self.viewStore = ViewStore(store, observe: { $0 })
+    }
     
     public var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
-            VStack {
-                HStack {
-                    Text(viewStore.book.name)
-                    Spacer()
-                    Image(systemName: "chevron.down")
-                        .imageScale(.small)
-                        .rotationEffect(.degrees(viewStore.isExpanded ? 180 : 0))
-                }
-                .frame(height: 40, alignment: .bottom)
-                
-                if viewStore.isExpanded {
-                    if viewStore.chapters.isEmpty {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                    } else {
-                        LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
-                            ForEach(viewStore.chapters) { chapter in
-                                NavigationLink(value: chapter) {
-                                    IndexView(index: chapter.id as Int)
-                                }
+        VStack {
+            HStack {
+                Text(viewStore.book.name)
+                Spacer()
+                Image(systemName: "chevron.down")
+                    .imageScale(.small)
+                    .rotationEffect(.degrees(viewStore.isExpanded ? 180 : 0))
+            }
+            .frame(height: 40, alignment: .bottom)
+            
+            if viewStore.isExpanded {
+                if viewStore.chapters.isEmpty {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                } else {
+                    LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
+                        ForEach(viewStore.chapters) { chapter in
+                            NavigationLink(value: chapter) {
+                                IndexView(index: chapter.id as Int)
                             }
                         }
                     }
-                }
-            }
-            .padding(viewStore.isExpanded ? [.horizontal, .bottom] : [.horizontal])
-            .onTapGesture {
-                viewStore.send(.toggle, animation: .easeOut(duration: 0.3))
-            }
-            .background {
-                if viewStore.isExpanded {
-                    Color.accentColor.opacity(15 / 100)
-                }
-            }
-            .navigationDestination(for: Chapter.self) { chapter in
-                ScrollView {
-                    if let verses = viewStore.verses, !verses.isEmpty {
-                        LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
-                            ForEach(verses) { verse in
-                                Button {
-                                    viewStore.send(
-                                        .select(
-                                            viewStore.book,
-                                            chapter,
-                                            viewStore.verses!,
-                                            verse
-                                        )
-                                    )
-                                } label: {
-                                    IndexView(index: verse.verseId)
+                    .navigationDestination(for: Chapter.self) { chapter in
+                        ScrollView {
+                            if let verses = viewStore.verses, !verses.isEmpty {
+                                LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 5)) {
+                                    ForEach(verses) { verse in
+                                        Button {
+                                            
+                                            viewStore.send(
+                                                .select(
+                                                    viewStore.book,
+                                                    chapter,
+                                                    viewStore.verses!,
+                                                    verse
+                                                )
+                                            )
+                                        } label: {
+                                            IndexView(index: verse.verseId)
+                                        }
+                                        
+                                    }
                                 }
-                                
+                                .padding(.horizontal)
+                            } else {
+                                ProgressView()
+                                    .progressViewStyle(.circular)
                             }
                         }
-                    } else {
-                        ProgressView()
-                            .progressViewStyle(.circular)
+                        .task {
+                            viewStore.send(.openChapter(chapter))
+                        }
+                        .navigationTitle("Select Verse")
                     }
                 }
-                .task {
-                    viewStore.send(.openChapter(chapter))
-                }
-                .navigationTitle("Select Verse")
             }
         }
+        .padding(viewStore.isExpanded ? [.horizontal, .bottom] : [.horizontal])
+        .onTapGesture {
+            viewStore.send(.toggle, animation: .easeOut(duration: 0.3))
+        }
+        .background {
+            if viewStore.isExpanded {
+                Color.accentColor.opacity(15 / 100)
+            }
+        }
+        .id(viewStore.book.id)
     }
 }
 
 public extension Section.State {
     static let mock = Self(
-        book: .mock
+        book: .genesis
     )
 }
 
@@ -182,7 +188,6 @@ struct SectionView_Previews: PreviewProvider {
                     initialState: .mock,
                     reducer: {
                         Section()
-                            ._printChanges()
                     })
                 )
             }

@@ -10,15 +10,15 @@ import BibleCore
 import ComposableArchitecture
 
 public struct BibleClient {
-    public let translations: @Sendable () async throws -> [Translation]
-    public let translation: @Sendable (TranslationID) async throws -> Translation
-    public let genres: @Sendable () async throws -> [Genre]
-    public let genre: @Sendable (GenreID) async throws -> Genre
-    public let books: @Sendable () async throws -> [Book]
-    public let book: @Sendable (BookID) async throws -> Book
-    public let chapters: @Sendable (BookID) async throws -> [Chapter]
-    public let verses: @Sendable (BookID, ChapterID) async throws -> [Verse]
-    public let verse: @Sendable (BookID, ChapterID, VerseID) async throws -> Verse
+    public var translations: @Sendable () async throws -> [Translation]
+    public var translation: @Sendable (TranslationID) async throws -> Translation
+    public var genres: @Sendable () async throws -> [Genre]
+    public var genre: @Sendable (GenreID) async throws -> Genre
+    public var books: @Sendable () async throws -> [Book]
+    public var book: @Sendable (BookID) async throws -> Book
+    public var chapters: @Sendable (BookID) async throws -> [Chapter]
+    public var verses: @Sendable (BookID, ChapterID) async throws -> [Verse]
+    public var verse: @Sendable (BookID, ChapterID, VerseID) async throws -> Verse
 }
 
 fileprivate let decoder = JSONDecoder()
@@ -119,9 +119,7 @@ extension BibleClient {
         genre: { _ in .mock },
         books: { [.genesis, .exodus, .leviticus] },
         book: { id in
-            guard let book = IdentifiedArray(
-                uniqueElements: [.genesis, .exodus, .leviticus] as [Book]
-            )[id: id] else {
+            guard let book = IdentifiedArray(uniqueElements: [Book].mock)[id: id] else {
                 throw BibleClientError.unknown
             }
             
