@@ -14,7 +14,9 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
+    - nmae: xcodebuild
+      run: 
     - name: Build
-      run: cd BibleCore/ && swift build -v
+      run: swift build --package-path BibleCore --toolchain 5.8.0 
     - name: Run tests
-      run: cd BibleCore/ && swift test -v
+      run: swift test --package-path BibleCore --toolchain 5.8.0 
