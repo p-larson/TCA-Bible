@@ -1,0 +1,115 @@
+Target dependency graph (31 targets)
+XCTestDynamicOverlay in xctest-dynamic-overlay, no dependencies
+XCTestDynamicOverlay in xctest-dynamic-overlay, depends on:
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+CasePaths in swift-case-paths, depends on:
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+CasePaths in swift-case-paths, depends on:
+CasePaths in swift-case-paths (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+ConcurrencyExtras in swift-concurrency-extras, no dependencies
+ConcurrencyExtras in swift-concurrency-extras, depends on:
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+CombineSchedulers in combine-schedulers, depends on:
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+CombineSchedulers in combine-schedulers, depends on:
+CombineSchedulers in combine-schedulers (explicit)
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+CustomDump in swift-custom-dump, depends on:
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+CustomDump in swift-custom-dump, depends on:
+CustomDump in swift-custom-dump (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+Clocks in swift-clocks, depends on:
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+Clocks in swift-clocks, depends on:
+Clocks in swift-clocks (explicit)
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+Dependencies in swift-dependencies, depends on:
+Clocks in swift-clocks (explicit)
+CombineSchedulers in combine-schedulers (explicit)
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+Dependencies in swift-dependencies, depends on:
+Dependencies in swift-dependencies (explicit)
+Clocks in swift-clocks (explicit)
+CombineSchedulers in combine-schedulers (explicit)
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+OrderedCollections in swift-collections, no dependencies
+OrderedCollections in swift-collections, depends on:
+OrderedCollections in swift-collections (explicit)
+IdentifiedCollections in swift-identified-collections, depends on:
+OrderedCollections in swift-collections (explicit)
+IdentifiedCollections in swift-identified-collections, depends on:
+IdentifiedCollections in swift-identified-collections (explicit)
+OrderedCollections in swift-collections (explicit)
+SwiftUINavigationCore in swiftui-navigation, depends on:
+CustomDump in swift-custom-dump (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+SwiftUINavigationCore in swiftui-navigation, depends on:
+SwiftUINavigationCore in swiftui-navigation (explicit)
+CustomDump in swift-custom-dump (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+ComposableArchitecture in swift-composable-architecture, depends on:
+CasePaths in swift-case-paths (explicit)
+CombineSchedulers in combine-schedulers (explicit)
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+CustomDump in swift-custom-dump (explicit)
+Dependencies in swift-dependencies (explicit)
+IdentifiedCollections in swift-identified-collections (explicit)
+OrderedCollections in swift-collections (explicit)
+SwiftUINavigationCore in swiftui-navigation (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+ComposableArchitecture in swift-composable-architecture, depends on:
+ComposableArchitecture in swift-composable-architecture (explicit)
+CasePaths in swift-case-paths (explicit)
+CombineSchedulers in combine-schedulers (explicit)
+ConcurrencyExtras in swift-concurrency-extras (explicit)
+CustomDump in swift-custom-dump (explicit)
+Dependencies in swift-dependencies (explicit)
+IdentifiedCollections in swift-identified-collections (explicit)
+OrderedCollections in swift-collections (explicit)
+SwiftUINavigationCore in swiftui-navigation (explicit)
+XCTestDynamicOverlay in xctest-dynamic-overlay (explicit)
+BibleCore in Bible, depends on:
+ComposableArchitecture in swift-composable-architecture (explicit)
+BibleClient in Bible, depends on:
+BibleCore in Bible (explicit)
+ComposableArchitecture in swift-composable-architecture (explicit)
+DirectoryCore in Bible, depends on:
+BibleCore in Bible (explicit)
+BibleClient in Bible (explicit)
+ComposableArchitecture in swift-composable-architecture (explicit)
+ReaderCore in Bible, depends on:
+BibleCore in Bible (explicit)
+BibleClient in Bible (explicit)
+DirectoryCore in Bible (explicit)
+ComposableArchitecture in swift-composable-architecture (explicit)
+ReaderCore in Bible, depends on:
+ReaderCore in Bible (explicit)
+BibleCore in Bible (explicit)
+BibleClient in Bible (explicit)
+DirectoryCore in Bible (explicit)
+ComposableArchitecture in swift-composable-architecture (explicit)
+BibleCore in Bible, depends on:
+BibleCore in Bible (explicit)
+ComposableArchitecture in swift-composable-architecture (explicit)
+BibleClient in Bible, depends on:
+BibleClient in Bible (explicit)
+BibleCore in Bible (explicit)
+ComposableArchitecture in swift-composable-architecture (explicit)
+DirectoryCore in Bible, depends on:
+DirectoryCore in Bible (explicit)
+BibleCore in Bible (explicit)
+BibleClient in Bible (explicit)
+ComposableArchitecture in swift-composable-architecture (explicit)
+Bible in Bible, depends on:
+ReaderCore in Bible (explicit)
+BibleCore in Bible (explicit)
+BibleClient in Bible (explicit)
+DirectoryCore in Bible (explicit)

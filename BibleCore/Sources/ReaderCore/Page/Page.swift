@@ -4,6 +4,11 @@ import BibleCore
 import ComposableArchitecture
 
 public struct Page: Reducer {
+    
+    private enum CancelId: Hashable {
+        case verses
+    }
+    
     public struct State: Equatable {
         var book: Book?
         var chapter: Chapter?
@@ -21,47 +26,55 @@ public struct Page: Reducer {
             self.verses = verses
             self.verse = verse
         }
+        
+        var isRedacted: Bool {
+            verses == nil
+        }
     }
     
     public enum Action: Equatable {
         case task
         case open(Book, Chapter, [Verse], focused: Verse?)
+        case jump(Book, Chapter)
         case select(Verse)
         case paginateChapter(forward: Bool)
         case paginateBook(forward: Bool)
         case clear
+        case add(Verse)
     }
     
     @Dependency(\.bible) var bible: BibleClient
+    @Dependency(\.continuousClock) var clock
     
     public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .task:
-                guard state.book == nil else {
+                switch (state.book == nil, state.chapter == nil) {
+                case (true, true):
+                    return .run { send in
+                        let books = try await self.bible.books()
+                        
+                        guard let book = books.first else {
+                            return
+                        }
+                        
+                        let chapters = try await self.bible.chapters(book.id)
+                        
+                        guard let chapter = chapters.first else {
+                            return
+                        }
+                        
+                        let verses = try await self.bible.verses(book.id, chapter.id)
+                        
+                        await send(.open(book, chapter, verses, focused: nil))
+                    }
+                default:
                     return .none
-                }
-                
-                return .run { send in
-                    let books = try await self.bible.books()
-                    
-                    guard let book = books.first else {
-                        return
-                    }
-                    
-                    let chapters = try await self.bible.chapters(book.id)
-                    
-                    guard let chapter = chapters.first else {
-                        return
-                    }
-                    
-                    let verses = try await self.bible.verses(book.id, chapter.id)
-                    
-                    await send(.open(book, chapter, verses, focused: nil))
                 }
             case .clear:
                 state.verses = nil
-                return .none
+                return .cancel(id: CancelId.verses)
             case .paginateChapter(forward: true):
                 guard let book = state.book, let chapter = state.chapter else {
                     return .none
@@ -93,6 +106,7 @@ public struct Page: Reducer {
                 return .run { [
                     book = book
                 ] send in
+                    
                     let books = try await bible.books()
                     
                     var nextBook: Book?
@@ -174,78 +188,38 @@ public struct Page: Reducer {
                     }
                 }
             case .open(let book, let chapter, let verses, let verse):
-                print(book.name, chapter.id)
                 state.book = book
                 state.chapter = chapter
-                state.verses = verses
                 state.verse = verse
+                state.verses = nil
+                
+                // Animate adding the verses
+                return .concatenate(
+                    .run { [verses = verses] send in
+                        for verse in verses {
+                            try await clock.sleep(for: .milliseconds(30))
+                            await send(.add(verse), animation: .easeOut(duration: 0.3))
+                        }
+                    }
+                )
+                .cancellable(id: CancelId.verses)
+            case .add(let verse):
+                if state.verses == nil {
+                    state.verses = [verse]
+                } else {
+                    state.verses?.append(verse)
+                }
                 return .none
+            case .jump(let book, let chapter):
+                return .run { send in
+                    let verses = try await bible.verses(book.id, chapter.id)
+                    
+                    await send(.open(book, chapter, verses, focused: nil))
+                }
             case .select(let verse):
                 state.verse = verse
                 return .none
             }
         }
-    }
-}
-
-struct ContentView: View {
-    let store: StoreOf<Page>
-
-    func swipe(store: ViewStoreOf<Page>) -> some Gesture {
-        DragGesture()
-            .onEnded { value in
-                if value.translation.width < 0 {
-                    store.send(.paginateChapter(forward: true))
-                } else {
-                    store.send(.paginateChapter(forward: false))
-                }
-            }
-    }
-
-    var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
-            ScrollView {
-                ScrollViewReader { reader in
-                    if let verses = viewStore.verses {
-                        LazyVStack(alignment: .leading) {
-                            ForEach(verses) { (content: Verse) in
-                                HStack(alignment: .top, spacing: 8) {
-                                    Text(content.verseId.description)
-                                        .bold()
-                                    Text(content.verse)
-                                }
-                                    .frame(alignment: .top)
-                                    .onTapGesture {
-                                        viewStore.send(.select(content))
-                                    }
-                                    .id(content.id)
-                            }
-                            .onChange(of: viewStore.verse) { newValue in
-                                withAnimation(.easeOut(duration: 0.3)) {
-                                    reader.scrollTo(newValue?.id, anchor: .top)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    } else {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                    }
-                }
-            }
-            .task {
-                viewStore.send(.task)
-            }
-            .gesture(swipe(store: viewStore))
-        }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(store: Store(initialState: Page.State()) {
-            Page()
-        })
-        .previewDevice("iPhone 14")
     }
 }
