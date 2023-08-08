@@ -13,7 +13,14 @@ public struct DesktopReaderView: View {
         WithViewStore(store, observe: { $0} ) { viewStore in
             PageView(store: store.scope(state: \.page, action: DesktopReader.Action.page))
                 .toolbar {
-                    ToolbarDirectoryView(store: store.scope(state: \.toolbarDirectory, action: DesktopReader.Action.toolbarDirectory))
+                    ToolbarItem(placement: ToolbarItemPlacement.navigation) {
+                        ToolbarDirectoryView(
+                            store: store.scope(
+                                state: \.toolbarDirectory,
+                                action: DesktopReader.Action.toolbarDirectory
+                            )
+                        )
+                    }
                 }
         }
     }

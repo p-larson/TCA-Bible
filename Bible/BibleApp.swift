@@ -12,9 +12,9 @@ import ComposableArchitecture
 
 @main
 struct BibleApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            
             #if os(macOS)
                 DesktopReaderView(store: Store(initialState: DesktopReader.State.init()) {
                     DesktopReader()
@@ -32,7 +32,7 @@ struct BibleApp: App {
             .defaultPosition(.center)
             .windowResizability(.contentMinSize)
             .windowStyle(.titleBar)
-            .windowToolbarStyle(.unified)
+            .windowToolbarStyle(.unified(showsTitle: false))
         #endif
     }
 }

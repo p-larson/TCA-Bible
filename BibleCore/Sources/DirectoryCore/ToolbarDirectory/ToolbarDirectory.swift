@@ -51,8 +51,8 @@ public struct ToolbarDirectory: Reducer {
                 }
                 
                 return .none
-            case .getBook(.failure(let error)):
-                return .none
+            case .getBook(.failure(_)):
+                fatalError()
             case .openBook(let book):
                 state.book = book
                 state.chapter = nil
@@ -69,9 +69,14 @@ public struct ToolbarDirectory: Reducer {
                 }
             case .getChapters(.success(let chapters)):
                 state.chapters = IdentifiedArray(uniqueElements: chapters)
+                
+                if state.chapter == nil {
+                    state.chapter = state.chapters?.first
+                }
+                
                 return .none
-            case .getChapters(.failure(let error)):
-                return .none
+            case .getChapters(.failure(_)):
+                fatalError()
             case .select:
                 return .none
             case .binding:
