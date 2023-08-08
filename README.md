@@ -3,10 +3,10 @@
 
 This project is solely a demonstration of a multiplatform `iOS`/`macOS` application built with `SwiftUI` and `TCA`. Both apps are distinct, but they do share a majority of their code-base. Using `TCA` to hyper-modularize this project has allowed the two targets to share the most feasible amount of depenedencies, which has been a huge advantage.
 
-- ![iOS](##iOS)
-- ![macOS](##Mac)
-- [Source](##Source)
-- [Tests](##Tests)
+- [iOS](#iOS)
+- [macOS](#Mac)
+- [Source](#Source)
+- [Tests](#Tests)
 
 ## iOS
 
