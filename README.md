@@ -11,7 +11,7 @@ This project is solely a demonstration of a multiplatform `iOS`/`macOS` applicat
 
 ## iOS
 
-<img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.20.png" width=150> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.27.png" width=150> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.32.png" width=150> 
+<img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.20.png" width=225> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.27.png" width=225> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.32.png" width=225> 
 
 ## Mac
 
