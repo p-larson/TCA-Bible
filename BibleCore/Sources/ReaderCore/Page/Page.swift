@@ -193,15 +193,13 @@ public struct Page: Reducer {
                 state.verse = verse
                 state.verses = nil
                 
-                // Animate adding the verses
-                return .concatenate(
-                    .run { [verses = verses] send in
-                        for verse in verses {
-                            try await clock.sleep(for: .milliseconds(30))
-                            await send(.add(verse), animation: .easeOut(duration: 0.3))
-                        }
+                // Loop through the new verses and animate them into state consecutively
+                return .run { [verses = verses] send in
+                    for verse in verses {
+                        try await clock.sleep(for: .milliseconds(30))
+                        await send(.add(verse), animation: .easeOut(duration: 0.3))
                     }
-                )
+                }
                 .cancellable(id: CancelId.verses)
             case .add(let verse):
                 if state.verses == nil {
