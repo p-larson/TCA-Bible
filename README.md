@@ -8,6 +8,39 @@ This project is solely a demonstration of a multiplatform `iOS`/`macOS` applicat
 - [Source](#Source)
 - [Tests](#Tests)
 
+### My favorite lines of code from this project 💖
+* Exhaustive testing with `TCA`*
+
+```swift
+// BibleCore/Tests/ReaderCoreTests/ReaderTests.swift#testNextChapter:82-84
+await store.send(.menuDirectory(.book(id: Book.genesis.id, action: .select(.genesis, .mock, .mock, nil)))) {
+    $0.isDirectoryOpen = false
+}
+```
+
+### My least favorite lines of code from this project 😪
+
+*Optional SwiftUI.View#tag*
+
+```swift
+Picker(selection: viewStore.$book) {
+  ForEach(books) { book in
+      Text(book.name)
+        // This is beyond the silliest part of SwiftUI.
+        // BindingState<Optional<Book>> requires tag to SwiftUI.View#tag to be Optional<Book>
+        // otherwise, Optional<Book> equate to Book will always fail.
+        .tag(Book?.some(book))
+  }
+} label: {
+    Text("Book")
+}
+.onChange(of: viewStore.book) { newValue in
+    guard let book = newValue else { return }
+    viewStore.send(.openBook(book))
+}
+
+```
+
 ## iOS
 
 <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.20.png" width=150> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.27.png" width=150> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.32.png" width=150> 
