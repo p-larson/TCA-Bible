@@ -13,7 +13,8 @@ This project is solely a demonstration of a multiplatform `iOS`/`macOS` applicat
 <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.20.png" width=150> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.27.png" width=150> <img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-08-08%20at%2012.12.32.png" width=150> 
 
 ## Mac
-<img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Screenshot%202023-08-08%20at%2012.11.55%20PM.png" width=300>
+
+<img src="https://github.com/p-larson/TCA-Bible/blob/main/Bible/Screenshot%202023-08-08%20at%2012.11.55%20PM.png" width=600>
 
 ## Source
 
@@ -44,7 +45,10 @@ This project is solely a demonstration of a multiplatform `iOS`/`macOS` applicat
 
 ## Tests
 
-
+- [AppStoreSnapshotTests](BibleCore/Tests/AppStoreSnapshotTests/)
+- [BibleClientTests](BibleCore/Tests/BibleClientTests/)
+- [DirectoryCoreTests](BibleCore/Tests/DirectoryCoreTests/)
+- [ReaderCoreTests](BibleCore/Tests/ReaderCoreTests/)
 
 ## More Screenshots
 
