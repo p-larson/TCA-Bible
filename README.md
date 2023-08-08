@@ -9,7 +9,7 @@ This project is solely a demonstration of a multiplatform `iOS`/`macOS` applicat
 - [Tests](#Tests)
 
 ### My favorite lines of code from this project 💖
-* Exhaustive testing with `TCA`*
+*Exhaustive testing with `TCA`*
 
 ```swift
 // BibleCore/Tests/ReaderCoreTests/ReaderTests.swift#testNextChapter:82-84
@@ -23,7 +23,8 @@ await store.send(.menuDirectory(.book(id: Book.genesis.id, action: .select(.gene
 *Optional SwiftUI.View#tag*
 
 ```swift
-Picker(selection: viewStore.$book) {
+// viewStore.$book: Optional<Book>
+Picker(selection: viewStore.$book) { 
   ForEach(books) { book in
       Text(book.name)
         // This is beyond the silliest part of SwiftUI.
@@ -31,14 +32,8 @@ Picker(selection: viewStore.$book) {
         // otherwise, Optional<Book> equate to Book will always fail.
         .tag(Book?.some(book))
   }
-} label: {
-    Text("Book")
 }
-.onChange(of: viewStore.book) { newValue in
-    guard let book = newValue else { return }
-    viewStore.send(.openBook(book))
-}
-
+...
 ```
 
 ## iOS
