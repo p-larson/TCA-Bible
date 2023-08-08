@@ -25,7 +25,7 @@ public struct Section: Reducer {
         case load(TaskResult<[Chapter]>)
         case openChapter(Chapter)
         case loadChapter(TaskResult<[Verse]>)
-        case select(Book, Chapter, [Verse], Verse)
+        case select(Book, Chapter, [Verse], Verse?)
     }
     
     @Dependency(\.bible) var bible: BibleClient

@@ -13,27 +13,40 @@ import BibleCore
 final class PageTests: XCTestCase {
     
     @MainActor func testTask() async {
+        let clock = TestClock()
+        
         let store = TestStore(
-            initialState: Page.State(),
-            reducer: {
-                Page()._printChanges()
-            }
-        )
+            initialState: Page.State()
+        ) {
+            Page()._printChanges()
+        } withDependencies: {
+            $0.continuousClock = clock
+        }
         
         await store.send(.task)
 
         await store.receive(.open(.genesis, .mock, [.mock], focused: nil), timeout: .seconds(10)) {
             $0.book = .genesis
             $0.chapter = .mock
+            $0.verses = nil
+        }
+        
+        await clock.advance(by: .seconds(10))
+        
+        await store.receive(.add(.mock)) {
             $0.verses = [.mock]
         }
     }
     
     @MainActor func testForwardChapter() async {
+        let clock = TestClock()
+        
         let store = TestStore(
             initialState: Page.State(book: .genesis, chapter: .mock, verses: .mock)
         ) {
             Page()
+        } withDependencies: {
+            $0.continuousClock = clock
         }
         
         let nextChapter = Chapter(id: Chapter.mock.id + 1)
@@ -43,6 +56,9 @@ final class PageTests: XCTestCase {
         }
         
         await store.send(.paginateChapter(forward: true))
+        
+        await clock.advance(by: .seconds(10))
+        
         await store.receive(.clear) {
             $0.verses = nil
         }
@@ -50,16 +66,23 @@ final class PageTests: XCTestCase {
         await store.receive(.open(.genesis, nextChapter, .mock, focused: nil)) {
             $0.book = .genesis
             $0.chapter = nextChapter
-            $0.verses = .mock
+            $0.verses = nil
+        }
+        
+        await store.receive(.add(.mock)) {
+            $0.verses = [.mock]
         }
         
     }
     
     @MainActor func testBackwardChapter() async {
+        let clock = TestClock()
         let store = TestStore(
             initialState: Page.State(book: .genesis, chapter: .mock, verses: .mock)
         ) {
             Page()
+        } withDependencies: {
+            $0.continuousClock = clock
         }
         
         let lastChapter = Chapter(id: Chapter.mock.id - 1)
@@ -69,6 +92,9 @@ final class PageTests: XCTestCase {
         }
         
         await store.send(.paginateChapter(forward: false))
+        
+        await clock.advance(by: .seconds(10))
+        
         await store.receive(.clear) {
             $0.verses = nil
         }
@@ -76,37 +102,63 @@ final class PageTests: XCTestCase {
         await store.receive(.open(.genesis, lastChapter, .mock, focused: nil)) {
             $0.book = .genesis
             $0.chapter = lastChapter
-            $0.verses = .mock
+            $0.verses = nil
+        }
+        
+        await store.receive(.add(.mock)) {
+            $0.verses = [.mock]
         }
         
     }
     
     @MainActor func testForwardBook() async {
+        let clock = TestClock()
+        
         let store = TestStore(
             initialState: Page.State(book: .genesis, chapter: .mock, verses: .mock)
         ) {
             Page()
+        } withDependencies: {
+            $0.continuousClock = clock
         }
         
         await store.send(.paginateBook(forward: true))
         
+        await clock.advance(by: .seconds(10))
+        
         await store.receive(.open(.exodus, .mock, .mock, focused: nil)) {
             $0.book = .exodus
+            $0.verses = nil
+        }
+        
+        await store.receive(.add(.mock)) {
+            $0.verses = [.mock]
         }
 
     }
     
     @MainActor func testBackwardBook() async {
+        let clock = TestClock()
+        
         let store = TestStore(
             initialState: Page.State(book: .genesis, chapter: .mock, verses: .mock)
         ) {
             Page()
+        } withDependencies: {
+            $0.continuousClock = clock
         }
         
         await store.send(.paginateBook(forward: false))
         
+        await clock.advance(by: .seconds(10))
+        
         await store.receive(.open(.leviticus, .mock, .mock, focused: nil)) {
             $0.book = .leviticus
+            $0.verses = nil
+        }
+        
+        await store.receive(.add(.mock)) {
+            $0.verses = [.mock]
         }
     }
     
@@ -123,6 +175,8 @@ final class PageTests: XCTestCase {
             Book.leviticus
         ]
         
+        let clock = TestClock()
+        
         let store = TestStore(
             initialState: Page.State(book: .genesis, chapter: chapters.last!, verses: .mock)
         ) {
@@ -134,6 +188,8 @@ final class PageTests: XCTestCase {
             $0.bible.books = {
                 return books
             }
+            
+            $0.continuousClock = clock
         }
         
         await store.send(.paginateChapter(forward: false))
@@ -142,9 +198,16 @@ final class PageTests: XCTestCase {
             $0.verses = nil
         }
         
+        
         await store.receive(.open(.genesis, chapters.first!, .mock, focused: nil)) {
             $0.chapter = chapters.first!
-            $0.verses = .mock
+            $0.verses = nil
+        }
+        
+        await clock.advance(by: .seconds(10))
+        
+        await store.receive(.add(.mock)) {
+            $0.verses = [.mock]
         }
         
         // New book, should have "different" chapters
@@ -153,6 +216,8 @@ final class PageTests: XCTestCase {
         }
         
         await store.send(.paginateChapter(forward: false))
+        
+        await clock.advance(by: .seconds(10))
         
         await store.receive(.clear) {
             $0.verses = nil
@@ -163,7 +228,14 @@ final class PageTests: XCTestCase {
         await store.receive(.open(.leviticus, .mock, .mock, focused: nil)) {
             $0.book = books.last!
             $0.chapter = .mock
-            $0.verses = .mock
+            $0.verses = nil
         }
+        
+        await clock.advance(by: .seconds(10))
+        
+        await store.receive(.add(.mock)) {
+            $0.verses = [.mock]
+        }
+        
     }
 }
