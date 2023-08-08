@@ -23,6 +23,7 @@ await store.send(.menuDirectory(.book(id: Book.genesis.id, action: .select(.gene
 *Optional SwiftUI.View#tag*
 
 ```swift
+// BibleCore/Source/DirectoryCore/ToolbarDirectory/ToolbarDirectoy.swift:23
 // viewStore.$book: Optional<Book>
 Picker(selection: viewStore.$book) { 
   ForEach(books) { book in
