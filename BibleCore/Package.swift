@@ -19,7 +19,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/pointfreeco/swift-snapshot-testing",
-            from: "1.1.1"
+            from: "1.1.0"
         )
     ],
     targets: [
