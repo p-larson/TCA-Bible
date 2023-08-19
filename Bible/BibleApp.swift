@@ -12,7 +12,6 @@ import ComposableArchitecture
 
 @main
 struct BibleApp: App {
-    
     var body: some Scene {
         WindowGroup {
             #if os(macOS)
