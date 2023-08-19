@@ -2,6 +2,7 @@ import SwiftUI
 import BibleClient
 import BibleCore
 import ComposableArchitecture
+import UserDefaultsClient
 
 public struct Page: Reducer {
     
@@ -9,7 +10,7 @@ public struct Page: Reducer {
         case verses
     }
     
-    public struct State: Equatable {
+    public struct State: Equatable, Codable {
         var book: Book?
         var chapter: Chapter?
         var verses: [Verse]?
@@ -33,8 +34,9 @@ public struct Page: Reducer {
     }
     
     public enum Action: Equatable {
-        case task
-        case open(Book, Chapter, [Verse], focused: Verse?)
+        case loadLastSave
+        case firstTimeLoad
+        case open(Book, Chapter, [Verse], focused: Verse?, save: Bool)
         case jump(Book, Chapter)
         case select(Verse)
         case paginateChapter(forward: Bool)
@@ -45,33 +47,52 @@ public struct Page: Reducer {
     
     @Dependency(\.bible) var bible: BibleClient
     @Dependency(\.continuousClock) var clock
+    @Dependency(\.defaults) var defaults: UserDefaultsClient
+    
+    struct LastSaveID: Hashable { }
+    struct FirstTimeID: Hashable { }
+    
+    fileprivate let encoder = JSONEncoder()
+    fileprivate let decoder = JSONDecoder()
     
     public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .task:
-                switch (state.book == nil, state.chapter == nil) {
-                case (true, true):
-                    return .run { send in
-                        let books = try await self.bible.books()
-                        
-                        guard let book = books.first else {
-                            return
-                        }
-                        
-                        let chapters = try await self.bible.chapters(book.id)
-                        
-                        guard let chapter = chapters.first else {
-                            return
-                        }
-                        
-                        let verses = try await self.bible.verses(book.id, chapter.id)
-                        
-                        await send(.open(book, chapter, verses, focused: nil))
+            case .loadLastSave:
+                return .run { send in
+                    guard
+                        let data = try await defaults.get(lastSaveKey),
+                        let save = try? decoder.decode(State.self, from: data),
+                        let book = save.book,
+                        let chapter = save.chapter,
+                        let verses = save.verses
+                    else {
+                        await send(.firstTimeLoad)
+                        return
                     }
-                default:
-                    return .none
+                    
+                    await send(.open(book, chapter, verses, focused: save.verse, save: false))
                 }
+                .cancellable(id: LastSaveID())
+            case .firstTimeLoad:
+                return .run { send in
+                    let books = try await self.bible.books()
+                    
+                    guard let book = books.first else {
+                        return
+                    }
+                    
+                    let chapters = try await self.bible.chapters(book.id)
+                    
+                    guard let chapter = chapters.first else {
+                        return
+                    }
+                    
+                    let verses = try await self.bible.verses(book.id, chapter.id)
+                    
+                    await send(.open(book, chapter, verses, focused: nil, save: true))
+                }
+                .cancellable(id: FirstTimeID())
             case .clear:
                 state.verses = nil
                 return .cancel(id: CancelId.verses)
@@ -92,7 +113,7 @@ public struct Page: Reducer {
                         let newChapter = chapters[chapters.index(after: index)]
                         let verses = try await bible.verses(book.id, newChapter.id)
                         
-                        await send(.open(book, newChapter, verses, focused: nil))
+                        await send(.open(book, newChapter, verses, focused: nil, save: true))
                         
                     } else {
                         await send(.paginateBook(forward: true))
@@ -129,7 +150,7 @@ public struct Page: Reducer {
                         
                         let verses = try await bible.verses(nextBook.id, firstChapter.id)
                         
-                        await send(.open(nextBook, firstChapter, verses, focused: nil))
+                        await send(.open(nextBook, firstChapter, verses, focused: nil, save: true))
                     }
                 }
             case .paginateChapter(forward: false):
@@ -148,7 +169,7 @@ public struct Page: Reducer {
                         let newChapter = chapters[chapters.index(before: index)]
                         let verses = try await bible.verses(book.id, newChapter.id)
                         
-                        await send(.open(book, newChapter, verses, focused: nil))
+                        await send(.open(book, newChapter, verses, focused: nil, save: true))
                         
                     } else {
                         await send(.paginateBook(forward: false))
@@ -184,20 +205,31 @@ public struct Page: Reducer {
                         
                         let verses = try await bible.verses(nextBook.id, lastChapter.id)
                         
-                        await send(.open(nextBook, lastChapter, verses, focused: nil))
+                        await send(.open(nextBook, lastChapter, verses, focused: nil, save: true))
                     }
                 }
-            case .open(let book, let chapter, let verses, let verse):
+            case .open(let book, let chapter, let verses, let verse, let shouldSave):
                 state.book = book
                 state.chapter = chapter
                 state.verse = verse
                 state.verses = nil
-                
-                // Loop through the new verses and animate them into state consecutively
-                return .run { [verses = verses] send in
+            
+                return .run { [state = state, verses = verses] send in
+                    // Loop through the new verses and animate them into state consecutively
                     for verse in verses {
                         try await clock.sleep(for: .milliseconds(30))
                         await send(.add(verse), animation: .easeOut(duration: 0.3))
+                    }
+                    
+                    // Update recent save
+                    if shouldSave {
+                        guard
+                            let data = try? encoder.encode(state)
+                        else {
+                            return
+                        }
+                        
+                        try await defaults.set(data, lastSaveKey)
                     }
                 }
                 .cancellable(id: CancelId.verses)
@@ -212,7 +244,7 @@ public struct Page: Reducer {
                 return .run { send in
                     let verses = try await bible.verses(book.id, chapter.id)
                     
-                    await send(.open(book, chapter, verses, focused: nil))
+                    await send(.open(book, chapter, verses, focused: nil, save: false))
                 }
             case .select(let verse):
                 state.verse = verse
@@ -221,3 +253,5 @@ public struct Page: Reducer {
         }
     }
 }
+
+fileprivate let lastSaveKey: String = "last-save"

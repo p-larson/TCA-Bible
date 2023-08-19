@@ -13,12 +13,11 @@ import DirectoryCore
 
 final class ReaderTests: XCTestCase {
     @MainActor func testOpenBible() async {
-        let store = TestStore(
-            initialState: Reader.State(isDirectoryOpen: false),
-            reducer: {
-                Reader()
-            }
-        )
+        let store = TestStore(initialState: Reader.State(isDirectoryOpen: false)) {
+            Reader()
+        } withDependencies: {
+            $0.defaults = .liveValue
+        }
         
         await store.send(.openDirectory) {
             $0.isDirectoryOpen = true
@@ -42,6 +41,7 @@ final class ReaderTests: XCTestCase {
                 ._printChanges()
         } withDependencies: {
             $0.continuousClock = clock
+            $0.defaults = .liveValue
         }
         
         // Open menuDirectory
@@ -84,7 +84,7 @@ final class ReaderTests: XCTestCase {
         }
         
         // Open page
-        await store.receive(.page(.open(.genesis, .mock, [.mock], focused: nil))) {
+        await store.receive(.page(.open(.genesis, .mock, [.mock], focused: nil, save: true))) {
             $0.page = .init(book: .genesis, chapter: .mock, verses: nil, verse: nil)
         }
         
@@ -104,7 +104,7 @@ final class ReaderTests: XCTestCase {
         
         await store.receive(.page(.paginateBook(forward: true)))
         
-        await store.receive(.page(.open(.exodus, .mock, .mock, focused: nil))) {
+        await store.receive(.page(.open(.exodus, .mock, .mock, focused: nil, save: true))) {
             $0.page.book = .exodus
             $0.page.chapter = .mock
             $0.page.verses = nil
