@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "BibleCore", targets: ["BibleCore"]),
         .library(name: "ReaderCore", targets: ["ReaderCore"]),
         .library(name: "DirectoryCore", targets: ["DirectoryCore"]),
+        .library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"])
     ],
     dependencies: [
         .package(
@@ -29,6 +30,7 @@ let package = Package(
                 "BibleCore",
                 "BibleClient",
                 "DirectoryCore",
+                "UserDefaultsClient",
                 .product(
                     name: "ComposableArchitecture",
                     package: "swift-composable-architecture"
@@ -90,6 +92,16 @@ let package = Package(
             exclude: [
                 "__Snapshots__"
             ]
+        ),
+        .target(
+            name: "UserDefaultsClient",
+            dependencies: [
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+            ]
+        ),
+        .testTarget(
+            name: "UserDefaultsClientTests",
+            dependencies: ["UserDefaultsClient"]
         )
     ]
 )

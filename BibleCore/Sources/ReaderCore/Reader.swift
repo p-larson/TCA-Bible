@@ -62,7 +62,8 @@ public struct Reader: Reducer {
                 print("opening \(book.name)")
                 
                 state.isDirectoryOpen = false
-                return .send(.page(.open(book, chapter, verses, focused: verse)))
+                
+                return .send(.page(.open(book, chapter, verses, focused: verse, save: true)))
             case .menuDirectory:
                 return .none
             case .page:

@@ -50,7 +50,7 @@ struct PageView: View {
                 }
             }
             .task {
-                viewStore.send(.task)
+                viewStore.send(.loadLastSave)
             }
             .gesture(swipe(store: viewStore))
         }

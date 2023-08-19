@@ -20,12 +20,13 @@ final class PageTests: XCTestCase {
         ) {
             Page()._printChanges()
         } withDependencies: {
+            $0.defaults = .liveValue
             $0.continuousClock = clock
         }
         
-        await store.send(.task)
+        await store.send(.firstTimeLoad)
 
-        await store.receive(.open(.genesis, .mock, [.mock], focused: nil), timeout: .seconds(10)) {
+        await store.receive(.open(.genesis, .mock, [.mock], focused: nil, save: true), timeout: .seconds(10)) {
             $0.book = .genesis
             $0.chapter = .mock
             $0.verses = nil
@@ -46,6 +47,7 @@ final class PageTests: XCTestCase {
         ) {
             Page()
         } withDependencies: {
+            $0.defaults = .liveValue
             $0.continuousClock = clock
         }
         
@@ -63,7 +65,7 @@ final class PageTests: XCTestCase {
             $0.verses = nil
         }
         
-        await store.receive(.open(.genesis, nextChapter, .mock, focused: nil)) {
+        await store.receive(.open(.genesis, nextChapter, .mock, focused: nil, save: true)) {
             $0.book = .genesis
             $0.chapter = nextChapter
             $0.verses = nil
@@ -82,6 +84,7 @@ final class PageTests: XCTestCase {
         ) {
             Page()
         } withDependencies: {
+            $0.defaults = .liveValue
             $0.continuousClock = clock
         }
         
@@ -99,7 +102,7 @@ final class PageTests: XCTestCase {
             $0.verses = nil
         }
         
-        await store.receive(.open(.genesis, lastChapter, .mock, focused: nil)) {
+        await store.receive(.open(.genesis, lastChapter, .mock, focused: nil, save: true)) {
             $0.book = .genesis
             $0.chapter = lastChapter
             $0.verses = nil
@@ -119,6 +122,7 @@ final class PageTests: XCTestCase {
         ) {
             Page()
         } withDependencies: {
+            $0.defaults = .liveValue
             $0.continuousClock = clock
         }
         
@@ -126,7 +130,7 @@ final class PageTests: XCTestCase {
         
         await clock.advance(by: .seconds(10))
         
-        await store.receive(.open(.exodus, .mock, .mock, focused: nil)) {
+        await store.receive(.open(.exodus, .mock, .mock, focused: nil, save: true)) {
             $0.book = .exodus
             $0.verses = nil
         }
@@ -145,6 +149,7 @@ final class PageTests: XCTestCase {
         ) {
             Page()
         } withDependencies: {
+            $0.defaults = .liveValue
             $0.continuousClock = clock
         }
         
@@ -152,7 +157,7 @@ final class PageTests: XCTestCase {
         
         await clock.advance(by: .seconds(10))
         
-        await store.receive(.open(.leviticus, .mock, .mock, focused: nil)) {
+        await store.receive(.open(.leviticus, .mock, .mock, focused: nil, save: true)) {
             $0.book = .leviticus
             $0.verses = nil
         }
@@ -190,6 +195,7 @@ final class PageTests: XCTestCase {
             }
             
             $0.continuousClock = clock
+            $0.defaults = .liveValue
         }
         
         await store.send(.paginateChapter(forward: false))
@@ -199,7 +205,7 @@ final class PageTests: XCTestCase {
         }
         
         
-        await store.receive(.open(.genesis, chapters.first!, .mock, focused: nil)) {
+        await store.receive(.open(.genesis, chapters.first!, .mock, focused: nil, save: true)) {
             $0.chapter = chapters.first!
             $0.verses = nil
         }
@@ -225,7 +231,7 @@ final class PageTests: XCTestCase {
         
         await store.receive(.paginateBook(forward: false))
         
-        await store.receive(.open(.leviticus, .mock, .mock, focused: nil)) {
+        await store.receive(.open(.leviticus, .mock, .mock, focused: nil, save: true)) {
             $0.book = books.last!
             $0.chapter = .mock
             $0.verses = nil
