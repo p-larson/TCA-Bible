@@ -13,8 +13,8 @@ import DirectoryCore
 
 final class ReaderTests: XCTestCase {
     @MainActor func testOpenBible() async {
-        let store = TestStore(initialState: Reader.State(isDirectoryOpen: false)) {
-            Reader()
+        let store = TestStore(initialState: MobileReader.State(isDirectoryOpen: false)) {
+            MobileReader()
         } withDependencies: {
             $0.defaults = .liveValue
         }
@@ -35,9 +35,9 @@ final class ReaderTests: XCTestCase {
         let clock = TestClock()
         
         let store = TestStore(
-            initialState: Reader.State(isDirectoryOpen: false)
+            initialState: MobileReader.State(isDirectoryOpen: false)
         ) {
-            Reader()
+            MobileReader()
                 ._printChanges()
         } withDependencies: {
             $0.continuousClock = clock
