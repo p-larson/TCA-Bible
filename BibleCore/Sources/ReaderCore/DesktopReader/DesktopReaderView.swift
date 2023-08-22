@@ -22,6 +22,27 @@ public struct DesktopReaderView: View {
                         )
                     }
                 }
+                .overlay {
+                    HStack {
+                        Button {
+                            viewStore.send(.page(.paginateChapter(forward: false)))
+                        } label: {
+                            Image(systemName: "arrow.left")
+                        }
+                        .keyboardShortcut(.leftArrow)
+                        Spacer()
+                        Button {
+                            viewStore.send(.page(.paginateChapter(forward: true)))
+                        } label: {
+                            Image(systemName: "arrow.right")
+                        }
+                        .keyboardShortcut(.rightArrow)
+                     }
+                    .padding()
+                    .buttonBorderShape(.roundedRectangle)
+                    .buttonStyle(.borderedProminent)
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+                }
         }
     }
 }
