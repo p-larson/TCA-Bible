@@ -24,7 +24,7 @@ final class PageTests: XCTestCase {
             $0.continuousClock = clock
         }
         
-        await store.send(.firstTimeLoad)
+        await store.send(.firstReading)
 
         await store.receive(.open(.genesis, .mock, [.mock], focused: nil, save: true), timeout: .seconds(10)) {
             $0.book = .genesis

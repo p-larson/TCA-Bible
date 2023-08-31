@@ -94,7 +94,7 @@ extension Reader.State {
     )
 }
 
-struct BookReaderView_Previews: PreviewProvider {
+struct ReaderView_Previews: PreviewProvider {
     static var previews: some View {
         ReaderView(
             store: Store(
