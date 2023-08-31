@@ -11,6 +11,7 @@
 		984479E42A7DACA300B483B3 /* BibleClient in Frameworks */ = {isa = PBXBuildFile; productRef = 984479E32A7DACA300B483B3 /* BibleClient */; };
 		984479E62A7DACAA00B483B3 /* DirectoryCore in Frameworks */ = {isa = PBXBuildFile; productRef = 984479E52A7DACAA00B483B3 /* DirectoryCore */; };
 		9874C3882A6835AE00FAD33C /* BibleCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9874C3872A6835AE00FAD33C /* BibleCore */; };
+		988A4C612AA11650008468AE /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 988A4C602AA11650008468AE /* AppFeature */; };
 		98CEAA782A682FDE00CC4B3E /* BibleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CEAA772A682FDE00CC4B3E /* BibleApp.swift */; };
 		98CEAA7C2A682FDF00CC4B3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98CEAA7B2A682FDF00CC4B3E /* Assets.xcassets */; };
 		98CEAA802A682FDF00CC4B3E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98CEAA7F2A682FDF00CC4B3E /* Preview Assets.xcassets */; };
@@ -33,6 +34,7 @@
 			files = (
 				984479E22A7DACA000B483B3 /* ReaderCore in Frameworks */,
 				9874C3882A6835AE00FAD33C /* BibleCore in Frameworks */,
+				988A4C612AA11650008468AE /* AppFeature in Frameworks */,
 				984479E42A7DACA300B483B3 /* BibleClient in Frameworks */,
 				984479E62A7DACAA00B483B3 /* DirectoryCore in Frameworks */,
 			);
@@ -107,6 +109,7 @@
 				984479E12A7DACA000B483B3 /* ReaderCore */,
 				984479E32A7DACA300B483B3 /* BibleClient */,
 				984479E52A7DACAA00B483B3 /* DirectoryCore */,
+				988A4C602AA11650008468AE /* AppFeature */,
 			);
 			productName = Bible;
 			productReference = 98CEAA742A682FDE00CC4B3E /* Bible.app */;
@@ -284,6 +287,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Bible/Bible.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Bible/Preview Content\"";
@@ -323,6 +327,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Bible/Bible.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Bible/Preview Content\"";
@@ -395,6 +400,10 @@
 		9874C3872A6835AE00FAD33C /* BibleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BibleCore;
+		};
+		988A4C602AA11650008468AE /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -8,6 +8,8 @@ public struct Page: Reducer {
     
     private enum CancelId: Hashable {
         case verses
+        case attemptReload
+        case firstReading
     }
     
     public struct State: Equatable, Codable {
@@ -34,8 +36,8 @@ public struct Page: Reducer {
     }
     
     public enum Action: Equatable {
-        case loadLastSave
-        case firstTimeLoad
+        case attemptReload
+        case firstReading
         case open(Book, Chapter, [Verse], focused: Verse?, save: Bool)
         case jump(Book, Chapter)
         case select(Verse)
@@ -49,32 +51,34 @@ public struct Page: Reducer {
     @Dependency(\.continuousClock) var clock
     @Dependency(\.defaults) var defaults: UserDefaultsClient
     
-    struct LastSaveID: Hashable { }
-    struct FirstTimeID: Hashable { }
-    
     fileprivate let encoder = JSONEncoder()
     fileprivate let decoder = JSONDecoder()
     
     public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .loadLastSave:
+            case .attemptReload:
                 return .run { send in
+                    
+                    let data = try? await defaults.get(lastSaveKey)
+                    print("data!, ", data == nil)
                     guard
-                        let data = try await defaults.get(lastSaveKey),
+                        let data = data,
                         let save = try? decoder.decode(State.self, from: data),
                         let book = save.book,
                         let chapter = save.chapter,
                         let verses = save.verses
                     else {
-                        await send(.firstTimeLoad)
+                        await send(.firstReading)
                         return
                     }
                     
+                    print("loading", save.book?.name.description ?? "-", save.chapter?.id.description ?? "-")
+                    
                     await send(.open(book, chapter, verses, focused: save.verse, save: false))
                 }
-                .cancellable(id: LastSaveID())
-            case .firstTimeLoad:
+                .cancellable(id: CancelId.attemptReload)
+            case .firstReading:
                 return .run { send in
                     let books = try await self.bible.books()
                     
@@ -92,7 +96,7 @@ public struct Page: Reducer {
                     
                     await send(.open(book, chapter, verses, focused: nil, save: true))
                 }
-                .cancellable(id: FirstTimeID())
+                .cancellable(id: CancelId.firstReading)
             case .clear:
                 state.verses = nil
                 return .cancel(id: CancelId.verses)
@@ -213,26 +217,36 @@ public struct Page: Reducer {
                 state.chapter = chapter
                 state.verse = verse
                 state.verses = nil
-            
-                return .run { [state = state, verses = verses] send in
-                    // Loop through the new verses and animate them into state consecutively
-                    for verse in verses {
-                        try await clock.sleep(for: .milliseconds(30))
-                        await send(.add(verse), animation: .easeOut(duration: 0.3))
-                    }
-                    
-                    // Update recent save
-                    if shouldSave {
-                        guard
-                            let data = try? encoder.encode(state)
-                        else {
-                            return
+                return .concatenate(
+                    .cancel(id: CancelId.verses),
+                    .cancel(id: CancelId.firstReading),
+                    .run { [state = state, verses = verses] send in
+                        // Loop through the new verses and animate them into state consecutively
+                        for verse in verses {
+                            try await clock.sleep(for: .milliseconds(30))
+                            await send(.add(verse), animation: .easeOut(duration: 0.3))
                         }
                         
-                        try await defaults.set(data, lastSaveKey)
+                        // Update recent save
+                        if shouldSave {
+                            var copy = state
+                            
+                            copy.verses = verses
+                            
+                            guard
+                                let data = try? encoder.encode(copy)
+                            else {
+                                return
+                            }
+                            
+                            print("saving", state)
+                            try await defaults.set(data, lastSaveKey)
+                            let foo = try! await decoder.decode(Self.State.self, from: try! defaults.get(lastSaveKey)!)
+                            print("--- save", foo)
+                        }
                     }
-                }
-                .cancellable(id: CancelId.verses)
+                    .cancellable(id: CancelId.verses)
+                )
             case .add(let verse):
                 if state.verses == nil {
                     state.verses = [verse]

@@ -49,9 +49,6 @@ struct PageView: View {
                     .padding(.horizontal)
                 }
             }
-            .task {
-                viewStore.send(.loadLastSave)
-            }
             .gesture(swipe(store: viewStore))
         }
     }

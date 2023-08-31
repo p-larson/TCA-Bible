@@ -3,4 +3,300 @@
    uuid = "27370FDB-605C-43D9-BB47-FAFF0D0CB4D7"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BibleCore/Sources/ReaderCore/Page/Page.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - 726dba18263875bd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "704">
+               </Location>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - 726dba18263875bd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "1420">
+               </Location>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - 39a5cb78c84e0384"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "704">
+               </Location>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - 39a5cb78c84e0384"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "1424">
+               </Location>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - 726dba18263875bd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "680">
+               </Location>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - 726dba18263875bd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "1396">
+               </Location>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - a080dee2f9daf782"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "680">
+               </Location>
+               <Location
+                  uuid = "E927D782-DD6F-4379-A997-E0A6F80D8DE0 - a080dee2f9daf782"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "1400">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7FC5455A-477A-4232-B9F0-2231AD0BEDD2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BibleCore/Sources/ReaderCore/Page/Page.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "7FC5455A-477A-4232-B9F0-2231AD0BEDD2 - 726dba1826387550"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "3404">
+               </Location>
+               <Location
+                  uuid = "7FC5455A-477A-4232-B9F0-2231AD0BEDD2 - 39a5cb78c84e0369"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "7FC5455A-477A-4232-B9F0-2231AD0BEDD2 - 7c324135c110ed6c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "7FC5455A-477A-4232-B9F0-2231AD0BEDD2 - a080dee2f9daf76f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "3408">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A2B5859-5485-4747-A3F9-49452F37685C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BibleCore/Sources/ReaderCore/Page/Page.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "7A2B5859-5485-4747-A3F9-49452F37685C - 726dba18263875dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "1344">
+               </Location>
+               <Location
+                  uuid = "7A2B5859-5485-4747-A3F9-49452F37685C - 726dba18263875dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "1528">
+               </Location>
+               <Location
+                  uuid = "7A2B5859-5485-4747-A3F9-49452F37685C - a080dee2f9daf7e3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "1348">
+               </Location>
+               <Location
+                  uuid = "7A2B5859-5485-4747-A3F9-49452F37685C - a080dee2f9daf7e3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 @Sendable (ComposableArchitecture.Send&lt;ReaderCore.Page.Action&gt;) async -&gt; () in closure #1 (inout ReaderCore.Page.State, ReaderCore.Page.Action) -&gt; ComposableArchitecture.Effect&lt;ReaderCore.Page.Action&gt; in ReaderCore.Page.body.getter : some"
+                  moduleName = "Bible"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/plarson/Git/TCA-Bible/BibleCore/Sources/ReaderCore/Page/Page.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "1532">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
