@@ -1,23 +1,4 @@
 import ComposableArchitecture
-import UIKit
-
-final public class AppDelegate: NSObject, UIApplicationDelegate {
-    let store = Store(
-        initialState: AppReducer.State(
-            appDelegate: AppDelegateReducer.State()
-        )
-    ) {
-        AppReducer()
-    }
-    
-    public func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
-    ) -> Bool {
-        store.send(.appDelegate(.didFinishOpening))
-        return true
-    }
-}
 
 public struct AppDelegateReducer: Reducer {
     
