@@ -2,14 +2,14 @@ import ComposableArchitecture
 import DirectoryCore
 import SwiftUI
 
-public struct MobileReaderView: View {
-    let store: StoreOf<MobileReader>
+public struct ReaderView: View {
+    let store: StoreOf<Reader>
     
-    public init(store: StoreOf<MobileReader>) {
+    public init(store: StoreOf<Reader>) {
         self.store = store
     }
     
-    func arrows(_ viewStore: ViewStoreOf<MobileReader>) -> some View {
+    func arrows(_ viewStore: ViewStoreOf<Reader>) -> some View {
         HStack {
             Button {
                 viewStore.send(.page(.paginateChapter(forward: false)))
@@ -50,7 +50,7 @@ public struct MobileReaderView: View {
                 PageView(
                     store: store.scope(
                         state: \.page,
-                        action: MobileReader.Action.page
+                        action: Reader.Action.page
                     )
                 )
             }
@@ -78,7 +78,7 @@ public struct MobileReaderView: View {
                     MenuDirectoryView(
                         store: store.scope(
                             state: \.menuDirectory,
-                            action: MobileReader.Action.menuDirectory
+                            action: Reader.Action.menuDirectory
                         )
                     )
                     .navigationTitle("Books")
@@ -88,19 +88,19 @@ public struct MobileReaderView: View {
     }
 }
 
-extension MobileReader.State {
-    static let mock = MobileReader.State(
+extension Reader.State {
+    static let mock = Reader.State(
         isDirectoryOpen: false
     )
 }
 
 struct BookReaderView_Previews: PreviewProvider {
     static var previews: some View {
-        MobileReaderView(
+        ReaderView(
             store: Store(
                 initialState: .mock
             ) {
-                MobileReader()
+                Reader()
             }
         )
         .previewDisplayName("Mobile")
