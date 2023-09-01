@@ -11,7 +11,13 @@ let package = Package(
         .library(name: "BibleCore", targets: ["BibleCore"]),
         .library(name: "ReaderCore", targets: ["ReaderCore"]),
         .library(name: "DirectoryCore", targets: ["DirectoryCore"]),
+<<<<<<< Updated upstream
         .library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"])
+=======
+        .library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
+        .library(name: "AppFeature", targets: ["AppFeature"]),
+        .library(name: "Classroom", targets: ["Classroom"])
+>>>>>>> Stashed changes
     ],
     dependencies: [
         .package(
@@ -102,6 +108,29 @@ let package = Package(
         .testTarget(
             name: "UserDefaultsClientTests",
             dependencies: ["UserDefaultsClient"]
+        ),
+        .target(
+            name: "AppFeature",
+            dependencies: [
+                "ReaderCore",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+            ]
+        ),
+        .target(
+            name: "Classroom",
+            dependencies: [
+                "BibleCore",
+                "BibleClient",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+            ]
+        ),
+        .testTarget(
+            name: "ClassroomTests",
+            dependencies: [
+                "Classroom",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+            ]
+>>>>>>> Stashed changes
         )
     ]
 )
