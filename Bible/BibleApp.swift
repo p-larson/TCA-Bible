@@ -19,8 +19,8 @@ struct BibleApp: App {
                     DesktopReader()
                 })
             #elseif os(iOS)
-                MobileReaderView(store: Store(initialState: MobileReader.State.init()) {
-                    MobileReader()
+                ReaderView(store: Store(initialState: Reader.State.init()) {
+                    Reader()
                 })
             #else
                 fatalError("Unsupported OS")

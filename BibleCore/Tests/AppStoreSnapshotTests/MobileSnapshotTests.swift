@@ -10,8 +10,8 @@ import UIKit
 final class MobileSnapshotTests: XCTestCase {
     
     func testMobile() {
-        let store = Store(initialState: MobileReader.State()) {
-            MobileReader()
+        let store = Store(initialState: Reader.State()) {
+            Reader()
         }
         
         store.send(.page(.task))

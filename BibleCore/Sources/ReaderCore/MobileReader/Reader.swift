@@ -5,7 +5,7 @@ import SwiftUI
 import ComposableArchitecture
 import DirectoryCore
 
-public struct MobileReader: Reducer {
+public struct Reader: Reducer {
     public init() {
         // :)
     }
