@@ -23,6 +23,10 @@ let package = Package(
         .package(
             url: "https://github.com/pointfreeco/swift-snapshot-testing",
             from: "1.1.0"
+        ),
+        .package(
+            url: "https://github.com/ksemianov/WrappingHStack",
+            from: "0.1.0"
         )
     ],
     targets: [
@@ -117,6 +121,8 @@ let package = Package(
             dependencies: [
                 "BibleCore",
                 "BibleClient",
+                "UserDefaultsClient",
+                .product(name: "WrappingHStack", package: "WrappingHStack"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
         ),
