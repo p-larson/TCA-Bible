@@ -5,7 +5,9 @@ struct ClassroomView: View {
     let store: StoreOf<Classroom>
     
     var body: some View {
-        EmptyView()
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            
+        }
     }
 }
 

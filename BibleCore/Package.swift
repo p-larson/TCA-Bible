@@ -121,6 +121,7 @@ let package = Package(
             dependencies: [
                 "BibleCore",
                 "BibleClient",
+                "DirectoryCore",
                 "UserDefaultsClient",
                 .product(name: "WrappingHStack", package: "WrappingHStack"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")

@@ -2,18 +2,7 @@ import ComposableArchitecture
 import BibleCore
 import BibleClient
 
-/*
- Types of learning modes
- 
- FITB, fill in the blank
- - In the beginning
- 
- 
- 
- 
- */
-
-struct FillInTheBlank: Reducer {
+struct BuildByLetter: Reducer {
     enum Difficulty: Equatable, Codable {
         case easy, medium, hard
     }
@@ -43,7 +32,6 @@ struct FillInTheBlank: Reducer {
         Reduce { state, action in
             switch action {
             case .task:
-                
                 state.wordBank = withRandomNumberGenerator {
                     state.correctAnswer.shuffled(using: &$0)
                 }

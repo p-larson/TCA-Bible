@@ -3,10 +3,10 @@ import SwiftUI
 
 import WrappingHStack
 
-public struct PiecemealView: View {
-    public let store: StoreOf<Piecemeal>
+public struct BuildByWordView: View {
+    public let store: StoreOf<BuildByWord>
     
-    public init(store: StoreOf<Piecemeal>) {
+    public init(store: StoreOf<BuildByWord>) {
         self.store = store
     }
     
@@ -70,13 +70,13 @@ public struct PiecemealView: View {
     }
 }
 
-struct PiecemealView_Previews: PreviewProvider {
+struct BuildByWordView_Previews: PreviewProvider {
     static var previews: some View {
-        PiecemealView(
+        BuildByWordView(
             store: Store(
-                initialState: Piecemeal.State(),
+                initialState: BuildByWord.State(),
                 reducer: {
-                    Piecemeal()
+                    BuildByWord()
                         .dependency(\.bible, .testValue)
                 }
             )

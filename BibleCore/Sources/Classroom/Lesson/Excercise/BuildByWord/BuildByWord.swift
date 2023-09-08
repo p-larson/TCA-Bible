@@ -2,7 +2,7 @@ import ComposableArchitecture
 import BibleCore
 import BibleClient
 
-public struct Piecemeal: Reducer {
+public struct BuildByWord: Reducer {
     public init() {}
     
     public struct State: Equatable, Codable {
