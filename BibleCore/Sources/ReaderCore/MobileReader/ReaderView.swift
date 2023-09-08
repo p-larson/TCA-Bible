@@ -75,7 +75,7 @@ public struct ReaderView: View {
             )
             .popover(isPresented: viewStore.$isDirectoryOpen) {
                 NavigationStack {
-                    MenuDirectoryView(
+                    DirectoryView(
                         store: store.scope(
                             state: \.menuDirectory,
                             action: Reader.Action.menuDirectory

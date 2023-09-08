@@ -38,8 +38,8 @@ final class DirectoryCoreTests: XCTestCase {
     }
     
     @MainActor func testOpenAnotherBook() async {
-        let store = TestStore(initialState: MenuDirectory.State.mock, reducer:  {
-            MenuDirectory()
+        let store = TestStore(initialState: Directory.State.mock, reducer:  {
+            Directory()
         })
         
         await store.send(.task)

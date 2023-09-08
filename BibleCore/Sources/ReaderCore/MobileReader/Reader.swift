@@ -12,7 +12,7 @@ public struct Reader: Reducer {
     
     public struct State: Equatable {
         var page = Page.State()
-        var menuDirectory: MenuDirectory.State = MenuDirectory.State(
+        var menuDirectory: Directory.State = Directory.State(
             isDirectoryOpen: true,
             books: []
         )
@@ -42,13 +42,13 @@ public struct Reader: Reducer {
         case binding(_ action: BindingAction<State>)
         case openDirectory
         case page(Page.Action)
-        case menuDirectory(MenuDirectory.Action)
+        case menuDirectory(Directory.Action)
     }
     
     public var body: some Reducer<State, Action> {
         BindingReducer()
         Scope(state: \.menuDirectory, action: /Action.menuDirectory) {
-            MenuDirectory()
+            Directory()
         }
         Scope(state: \.page, action: /Action.page) {
             Page()
