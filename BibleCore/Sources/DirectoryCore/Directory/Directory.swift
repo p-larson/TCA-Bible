@@ -3,7 +3,7 @@ import BibleCore
 import BibleClient
 import ComposableArchitecture
 
-public struct MenuDirectory: Reducer {
+public struct Directory: Reducer {
     
     // Do I really need to declare an explicit public initiallizer?
     public init() {}

@@ -2,11 +2,11 @@ import ComposableArchitecture
 import SwiftUI
 
 @available(iOS 16.0, *)
-public struct MenuDirectoryView: View {
+public struct DirectoryView: View {
     
-    let store: StoreOf<MenuDirectory>
+    let store: StoreOf<Directory>
     
-    public init(store: StoreOf<MenuDirectory>) {
+    public init(store: StoreOf<Directory>) {
         self.store = store
     }
     
@@ -23,7 +23,7 @@ public struct MenuDirectoryView: View {
                                 ForEachStore(
                                     store.scope(
                                         state: \.sections,
-                                        action: MenuDirectory.Action.book(id:action:)
+                                        action: Directory.Action.book(id:action:)
                                     ),
                                     content: SectionView.init(store:)
                                 )
@@ -37,7 +37,7 @@ public struct MenuDirectoryView: View {
                     }
                     
                     Picker(selection: viewStore.$sorted) {
-                        ForEach(MenuDirectory.SortFilter.allCases, id: \.self) {
+                        ForEach(Directory.SortFilter.allCases, id: \.self) {
                             Text(String(describing: $0).capitalized)
                         }
                     } label: {
@@ -54,18 +54,18 @@ public struct MenuDirectoryView: View {
     }
 }
 
-extension MenuDirectory.State {
+extension Directory.State {
     static let mock = Self(
         isDirectoryOpen: true,
         books: []
     )
 }
 
-struct MenuDirectoryView_Previews: PreviewProvider {
+struct DirectoryView_Previews: PreviewProvider {
     static var previews: some View {
-        MenuDirectoryView(
+        DirectoryView(
             store: Store(initialState: .mock) {
-                MenuDirectory()
+                Directory()
                     ._printChanges()
             }
         )
