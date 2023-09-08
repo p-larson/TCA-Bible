@@ -4,7 +4,7 @@ import SwiftUI
 import ComposableArchitecture
 
 public struct Section: Reducer {
-    public struct State: Equatable, Hashable, Identifiable {
+    public struct State: Equatable, Hashable, Identifiable, Codable {
         public var book: Book
         public var chapters: [Chapter] = []
         public var chapter: Chapter? = nil

@@ -8,12 +8,12 @@ public struct Directory: Reducer {
     // Do I really need to declare an explicit public initiallizer?
     public init() {}
     
-    public enum SortFilter: CaseIterable {
+    public enum SortFilter: CaseIterable, Codable {
         case traditional
         case alphabetical
     }
     
-    public struct State: Equatable {
+    public struct State: Equatable, Codable {
         public var isDirectoryOpen: Bool
         public var sections: IdentifiedArrayOf<Section.State> = []
         public var focused: Book.ID? = nil
