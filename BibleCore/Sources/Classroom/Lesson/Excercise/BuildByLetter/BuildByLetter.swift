@@ -3,13 +3,11 @@ import BibleCore
 import BibleClient
 
 struct BuildByLetter: Reducer {
-    enum Difficulty: Equatable, Codable {
-        case easy, medium, hard
-    }
     
-    struct State: Equatable, Codable {
-        var difficulty: Difficulty
+    struct State: Equatable, Codable, Hashable {
         var verses: [Verse]
+        var answer: [String?]? = nil
+        var wordBank: [String] = []
         
         var correctAnswer: [String] {
             verses
@@ -18,8 +16,16 @@ struct BuildByLetter: Reducer {
                 .split(separator: " ")
                 .map(String.init)
         }
-        var answer: [String?]
-        var wordBank: [String]
+
+        init(
+            verses: [Verse],
+            answer: [String?]? = nil,
+            wordBank: [String] = []
+        ) {
+            self.verses = verses
+            self.answer = answer
+            self.wordBank = wordBank
+        }
     }
     
     enum Action {

@@ -6,13 +6,13 @@ import XCTest
 @MainActor
 final class ClassroomTests: XCTestCase {
     
-    var store: TestStoreOf<Piecemeal>!
+    var store: TestStoreOf<BuildByWord>!
     
     var wordBank: [String]!
     
     override func setUp() async throws {
-        store = TestStore(initialState: Piecemeal.State()) {
-            Piecemeal()
+        store = TestStore(initialState: BuildByWord.State()) {
+            BuildByWord()
         } withDependencies: {
             $0.withRandomNumberGenerator = WithRandomNumberGenerator(LCRNG(seed: 0))
         }

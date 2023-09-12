@@ -5,7 +5,7 @@ import BibleClient
 public struct BuildByWord: Reducer {
     public init() {}
     
-    public struct State: Equatable, Codable {
+    public struct State: Equatable, Codable, Hashable {
         var verses: [Verse]? = nil
         var error: ClassroomError? = nil
         var wordBank = [String]()
@@ -30,7 +30,7 @@ public struct BuildByWord: Reducer {
             return correctAnswer.elementsEqual(answer)
         }
         
-        public struct ClassroomError: Equatable, Codable {
+        public struct ClassroomError: Equatable, Codable, Hashable {
             let title, message: String
             
             init(title: String, message: String) {
@@ -62,8 +62,6 @@ public struct BuildByWord: Reducer {
         case setup([Verse])
         case failedSetup(error: State.ClassroomError)
         case guess(index: Int)
-        case check
-        case didComplete
     }
     
     @Dependency(\.bible) var bible: BibleClient
@@ -77,9 +75,8 @@ public struct BuildByWord: Reducer {
                 // we want to go fetch a random verse to start learning from.
                 
                 guard state.verses == nil else {
-                    return .none
+                    return .send(.setup(state.verses!))
                 }
-                
                 
                 // Grab a random verse to learn
                 return .run { send in
@@ -119,15 +116,6 @@ public struct BuildByWord: Reducer {
                 
                 state.answer.append(guess)
                 
-                return .none
-            case .check:
-                if state.isCorrect {
-                    return .send(.didComplete)
-                }
-                
-                return .none
-            case .didComplete:
-                print("Hazzah!")
                 return .none
             }
         }

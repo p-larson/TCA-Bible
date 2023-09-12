@@ -13,7 +13,8 @@ let package = Package(
         .library(name: "DirectoryCore", targets: ["DirectoryCore"]),
         .library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
         .library(name: "AppFeature", targets: ["AppFeature"]),
-        .library(name: "Classroom", targets: ["Classroom"])
+        .library(name: "Classroom", targets: ["Classroom"]),
+        .library(name: "BibleComponents", targets: ["BibleComponents"])
     ],
     dependencies: [
         .package(
@@ -30,6 +31,9 @@ let package = Package(
         )
     ],
     targets: [
+        .target(
+            name: "BibleComponents"
+        ),
         .target(
             name: "ReaderCore",
             dependencies: [
@@ -120,6 +124,7 @@ let package = Package(
             name: "Classroom",
             dependencies: [
                 "BibleCore",
+                "BibleComponents",
                 "BibleClient",
                 "DirectoryCore",
                 "UserDefaultsClient",

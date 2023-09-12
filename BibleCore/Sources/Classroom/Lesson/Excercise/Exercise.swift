@@ -2,7 +2,7 @@ import BibleCore
 import ComposableArchitecture
 
 struct Exercise: Reducer {
-    enum State: Equatable, Codable {
+    enum State: Equatable, Codable, Hashable {
         case buildByWord(BuildByWord.State)
         case buildByLetter(BuildByLetter.State)
     }

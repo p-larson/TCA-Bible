@@ -1,3 +1,4 @@
+import BibleComponents
 import ComposableArchitecture
 import SwiftUI
 
@@ -24,44 +25,16 @@ public struct BuildByWordView: View {
                 
                 Spacer()
                 
-                if viewStore.wordBank.isEmpty {
-                    
-                } else {
-                    WrappingHStack {
-                        ForEach(viewStore.wordBank.enumerated().map(\.offset), id: \.self) { index in
-                            Button {
-                                viewStore.send(.guess(index: index))
-                            } label: {
-                                Text(viewStore.wordBank[index])
-                                    .padding()
-                                    .foregroundColor(.black)
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 12, style: .circular)
-                                            .stroke(lineWidth: 2)
-                                            .foregroundColor(Color.black.opacity(1/5))
-                                            .shadow(color: Color.black.opacity(1/5), radius: 5, x: 5, y: 5)
-                                    }
-                            }
-
+                WrappingHStack {
+                    ForEach(viewStore.wordBank.enumerated().map(\.offset), id: \.self) { index in
+                        
+                        Button(viewStore.wordBank[index]) {
+                            viewStore.send(.guess(index: index))
                         }
+                        .buttonStyle(.option)
+                        
                     }
                 }
-                
-                Button {
-                    viewStore.send(.check)
-                } label: {
-                    Text("Check")
-                        .textCase(.uppercase)
-                        .foregroundColor(.white)
-                        .fontWeight(.bold)
-                        .frame(height: 50)
-                        .frame(maxWidth: .infinity)
-                        .background {
-                            RoundedRectangle(cornerRadius: 12, style: .circular)
-                                .foregroundColor(viewStore.answer.isEmpty ? .gray : .green)
-                        }
-                }
-                .disabled(viewStore.answer.isEmpty)
 
             }
             .task { viewStore.send(.task) }
@@ -78,6 +51,7 @@ struct BuildByWordView_Previews: PreviewProvider {
                 reducer: {
                     BuildByWord()
                         .dependency(\.bible, .testValue)
+                        ._printChanges()
                 }
             )
         )

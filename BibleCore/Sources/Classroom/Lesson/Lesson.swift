@@ -3,17 +3,17 @@ import ComposableArchitecture
 import Foundation
 
 struct Lesson: Reducer {
-    struct State: Identifiable, Equatable, Codable {
+    struct State: Identifiable, Equatable, Codable, Hashable {
         var verses: [Verse]
         var exercise: Exercise.State? = nil
         var grade: Grade.State = .disabled
-        var id: UUID
+        var id: UUID = UUID()
         
         public init(
             verses: [Verse],
             exercise: Exercise.State? = nil,
-            grade: Grade.State,
-            id: UUID
+            grade: Grade.State = .disabled,
+            id: UUID = UUID()
         ) {
             self.verses = verses
             self.exercise = exercise
@@ -34,6 +34,13 @@ struct Lesson: Reducer {
         }
         Reduce { state, action in
             switch action {
+            case .prepare:
+                
+                state.exercise = .buildByWord(BuildByWord.State.init(verses: .mock))
+                
+                return .none
+            case .grade(.next):
+                return .none
             default:
                 return .none
             }

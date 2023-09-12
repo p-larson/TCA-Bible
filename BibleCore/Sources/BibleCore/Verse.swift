@@ -34,4 +34,11 @@ public extension Array where Element == Verse {
     static var mock: [Verse] {
         [.mock]
     }
+    
+    var complete: [String] {
+        self.map(\.verse)
+            .joined(separator: " ")
+            .split(separator: " ")
+            .map(String.init)
+    }
 }
