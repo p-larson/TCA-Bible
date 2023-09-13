@@ -19,6 +19,7 @@ final public class AppDelegate: NSObject, UIApplicationDelegate {
         )
     ) {
         AppReducer()
+            ._printChanges()
     }
     
     public func application(
@@ -32,6 +33,9 @@ final public class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct BibleApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    
     var body: some Scene {
         WindowGroup {
             #if os(macOS)
@@ -39,9 +43,7 @@ struct BibleApp: App {
                     DesktopReader()
                 })
             #elseif os(iOS)
-                ReaderView(store: Store(initialState: Reader.State.init()) {
-                    Reader()
-                })
+                AppView(store: delegate.store)
             #else
                 fatalError("Unsupported OS")
             #endif
