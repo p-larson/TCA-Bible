@@ -11,28 +11,35 @@ public struct BuildByWordView: View {
         self.store = store
     }
     
+    @Namespace var namespace
+    
+    @State var foo = false
+    
     public var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(alignment: .leading, spacing: 32) {
                 Text("Classroom")
                     .font(.largeTitle)
                 
-                WrappingHStack {
-                    ForEach(viewStore.answer, id: \.self) { guess in
-                        Text(guess)
+                WrappingHStack(alignment: .leading) {
+                    ForEach(viewStore.answer) { guess in
+                        Button(guess.word) {
+                            viewStore.send(.remove(id: guess.id))
+                        }
+                        .buttonStyle(.option)
+                            .matchedGeometryEffect(id: guess.id, in: namespace, properties: .position)
                     }
                 }
                 
                 Spacer()
                 
                 WrappingHStack {
-                    ForEach(viewStore.wordBank.enumerated().map(\.offset), id: \.self) { index in
-                        
-                        Button(viewStore.wordBank[index]) {
-                            viewStore.send(.guess(index: index))
+                    ForEach(viewStore.wordBank) { guess in
+                        Button(guess.word) {
+                            viewStore.send(.guess(id: guess.id), animation: .easeOut(duration: 0.3))
                         }
                         .buttonStyle(.option)
-                        
+                        .matchedGeometryEffect(id: guess.id, in: namespace, isSource: true)
                     }
                 }
 

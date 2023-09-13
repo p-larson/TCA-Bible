@@ -12,7 +12,7 @@ fileprivate extension View {
         case .disabled:
             self.buttonStyle(.disabled)
         case .ready:
-            self.buttonStyle(.unselected)
+            self.buttonStyle(.correct)
         case .failed(_):
             self.buttonStyle(.unselected)
         case .partial(_):
@@ -68,7 +68,7 @@ struct GradeView: View {
                     .fontWeight(.bold)
                     .foreground(for: initialState)
                     .hidden(for: initialState)
-                Button("Continue") {
+                Button("check") {
                     store.send(.next)
                 }
                 .buttonStyle(for: initialState)

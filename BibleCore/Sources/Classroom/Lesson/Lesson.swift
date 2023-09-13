@@ -32,14 +32,28 @@ struct Lesson: Reducer {
         Scope(state: \.grade, action: /Action.grade) {
             Grade()
         }
-        Reduce { state, action in
+        Reduce<State, Action> { state, action in
             switch action {
             case .prepare:
-                
                 state.exercise = .buildByWord(BuildByWord.State.init(verses: .mock))
-                
+                return .none
+            case .excercise(.buildByWord(BuildByWord.Action.guess)), .excercise(.buildByWord(.remove)):
+                if case .buildByWord(let model) = state.exercise {
+                    if model.answer.isEmpty {
+                        state.grade = Grade.State.disabled
+                    } else {
+                        state.grade = Grade.State.ready
+                    }
+                }
                 return .none
             case .grade(.next):
+                // Test if we've actually completed the exercise
+                
+                
+                
+                
+                
+                
                 return .none
             default:
                 return .none

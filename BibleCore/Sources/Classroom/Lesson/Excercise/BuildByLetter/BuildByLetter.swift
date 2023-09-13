@@ -4,7 +4,15 @@ import BibleClient
 
 struct BuildByLetter: Reducer {
     
-    struct State: Equatable, Codable, Hashable {
+    struct State: Equatable, Codable, Hashable, ExerciseProtocol {
+        var isCorrect: Bool {
+            false
+        }
+        
+        var score: Int {
+            0
+        }
+        
         var verses: [Verse]
         var answer: [String?]? = nil
         var wordBank: [String] = []

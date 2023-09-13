@@ -1,3 +1,4 @@
+import BibleComponents
 import ComposableArchitecture
 import SwiftUI
 
@@ -11,16 +12,19 @@ struct LessonView: View {
     
     var body: some View {
         VStack {
-            HStack {
+            HStack(spacing: 16) {
                 Button {
                     
                 } label: {
                     Image(systemName: "xmark")
                 }
+                .controlSize(.large)
+                .foregroundColor(.black)
                 
-                ProgressBar()
+                ProgressBar(progress: 0)
 
             }
+            .padding(.horizontal)
             
             IfLetStore(
                 store.scope(state: \.exercise, action: Lesson.Action.excercise),
@@ -34,6 +38,7 @@ struct LessonView: View {
             Spacer()
             
             GradeView(store: store.scope(state: \.grade, action: Lesson.Action.grade))
+                .transaction { $0.animation = nil }
         }
         .onAppear {
             store.send(.prepare)

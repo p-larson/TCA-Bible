@@ -2,7 +2,26 @@ import BibleCore
 import ComposableArchitecture
 
 struct Exercise: Reducer {
-    enum State: Equatable, Codable, Hashable {
+    enum State: Equatable, Codable, Hashable, ExerciseProtocol {
+        var isCorrect: Bool {
+            switch self {
+            case .buildByLetter(let state):
+                return state.isCorrect
+            case .buildByWord(let state):
+                return state.isCorrect
+            }
+        }
+        
+        var score: Int {
+            switch self {
+            case .buildByLetter(let state):
+                return state.score
+            case .buildByWord(let state):
+                return state.score
+            }
+            
+        }
+        
         case buildByWord(BuildByWord.State)
         case buildByLetter(BuildByLetter.State)
     }
