@@ -3,6 +3,7 @@ import SwiftUI
 public struct UnselecedButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .textCase(.uppercase)
             .offset(y: configuration.isPressed ? 0 : -4)
             .font(.system(size: 14))
             .fontWeight(.bold)

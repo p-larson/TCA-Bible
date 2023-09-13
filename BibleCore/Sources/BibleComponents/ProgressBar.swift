@@ -1,20 +1,36 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by Peter Larson on 9/12/23.
-//
-
 import SwiftUI
 
-struct SwiftUIView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+public struct ProgressBar: View {
+    
+    private let progress: Double
+    
+    public init(progress: Double) {
+        self.progress = progress
+    }
+    
+    public var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.softGray)
+            GeometryReader { proxy in
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.correctGreen)
+                    .frame(width: (proxy.size.width - 32) * progress + 32)
+//                RoundedRectangle(cornerRadius: 16)
+//                    .fill(Color.white.opacity(1/10))
+//                    .frame(width: (proxy.size.width - 32) * progress + 16)
+//                    .frame(height: 8)
+//                    .offset(x: 8, y: 2)
+            }
+        }
+        .frame(minWidth: 48)
+        .frame(height: 16)
     }
 }
 
-struct SwiftUIView_Previews: PreviewProvider {
+struct ProgressBar_Previews: PreviewProvider {
     static var previews: some View {
-        SwiftUIView()
+        ProgressBar(progress: 1.0)
+            .padding()
     }
 }
