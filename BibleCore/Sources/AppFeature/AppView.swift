@@ -1,18 +1,19 @@
 import ComposableArchitecture
+import Classroom
 import ReaderCore
 import SwiftUI
 
-struct AppView: View {
+public struct AppView: View {
     let store: StoreOf<AppReducer>
     
     @ObservedObject var viewStore: ViewStoreOf<AppReducer>
     
-    init(store: StoreOf<AppReducer>) {
+    public init(store: StoreOf<AppReducer>) {
         self.store = store
         self.viewStore = ViewStore(store, observe: { $0 })
     }
     
-    var body: some View {
+    public var body: some View {
         NavigationStackStore(
             store.scope(state: \.path, action: AppReducer.Action.path)
         ) {
@@ -33,15 +34,13 @@ struct AppView: View {
             }
         } destination: { initialState in
             switch initialState {
-            case .empty:
-                Text("hello")
-                    .navigationBarBackButtonHidden(true)
-            case .reader:
+            case .classroom:
                 CaseLet(
-                    /AppReducer.Path.State.reader,
-                     action: AppReducer.Path.Action.reader,
-                     then: ReaderView.init(store:)
+                    /AppReducer.Path.State.classroom,
+                     action: AppReducer.Path.Action.classroom,
+                     then: ClassroomView.init(store:)
                 )
+                .navigationBarBackButtonHidden(true)
             }
         }
 
