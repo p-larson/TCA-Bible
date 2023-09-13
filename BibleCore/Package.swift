@@ -117,6 +117,7 @@ let package = Package(
             name: "AppFeature",
             dependencies: [
                 "ReaderCore",
+                "Classroom",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
         ),
