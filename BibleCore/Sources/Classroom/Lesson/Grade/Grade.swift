@@ -1,7 +1,9 @@
 import ComposableArchitecture
 
-struct Grade: Reducer {
-    enum State: Equatable, Codable, Hashable {
+public struct Grade: Reducer {
+    public init () {}
+    
+    public enum State: Equatable, Codable, Hashable {
         case disabled
         case ready
         case failed(String)
@@ -9,11 +11,11 @@ struct Grade: Reducer {
         case correct
     }
     
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case next
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .next:

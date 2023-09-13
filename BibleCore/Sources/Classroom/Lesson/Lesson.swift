@@ -2,12 +2,14 @@ import BibleCore
 import ComposableArchitecture
 import Foundation
 
-struct Lesson: Reducer {
-    struct State: Identifiable, Equatable, Codable, Hashable {
+public struct Lesson: Reducer {
+    public init () {} 
+    
+    public struct State: Identifiable, Equatable, Codable, Hashable {
         var verses: [Verse]
         var exercise: Exercise.State? = nil
         var grade: Grade.State = .disabled
-        var id: UUID = UUID()
+        public var id: UUID = UUID()
         
         public init(
             verses: [Verse],
@@ -22,13 +24,13 @@ struct Lesson: Reducer {
         }
     }
     
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case prepare
         case excercise(Exercise.Action)
         case grade(Grade.Action)
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Scope(state: \.grade, action: /Action.grade) {
             Grade()
         }

@@ -1,8 +1,10 @@
 import BibleCore
 import ComposableArchitecture
 
-struct Exercise: Reducer {
-    enum State: Equatable, Codable, Hashable, ExerciseProtocol {
+public struct Exercise: Reducer {
+    public init () {}
+    
+    public enum State: Equatable, Codable, Hashable, ExerciseProtocol {
         var isCorrect: Bool {
             switch self {
             case .buildByLetter(let state):
@@ -26,12 +28,12 @@ struct Exercise: Reducer {
         case buildByLetter(BuildByLetter.State)
     }
     
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case buildByWord(BuildByWord.Action)
         case buildByLetter(BuildByLetter.Action)
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Scope(state: /State.buildByWord, action: /Action.buildByWord) {
             BuildByWord()
         }

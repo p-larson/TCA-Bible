@@ -2,9 +2,10 @@ import ComposableArchitecture
 import BibleCore
 import BibleClient
 
-struct BuildByLetter: Reducer {
+public struct BuildByLetter: Reducer {
+    public init () {}
     
-    struct State: Equatable, Codable, Hashable, ExerciseProtocol {
+    public struct State: Equatable, Codable, Hashable, ExerciseProtocol {
         var isCorrect: Bool {
             false
         }
@@ -25,7 +26,7 @@ struct BuildByLetter: Reducer {
                 .map(String.init)
         }
 
-        init(
+        public init(
             verses: [Verse],
             answer: [String?]? = nil,
             wordBank: [String] = []
@@ -36,13 +37,13 @@ struct BuildByLetter: Reducer {
         }
     }
     
-    enum Action {
+    public enum Action {
         case task
     }
     
     @Dependency(\.withRandomNumberGenerator) var withRandomNumberGenerator: WithRandomNumberGenerator
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .task:

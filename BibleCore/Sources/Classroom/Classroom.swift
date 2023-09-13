@@ -3,16 +3,25 @@ import DirectoryCore
 import Foundation
 import UserDefaultsClient
 
-struct Classroom: Reducer {
-    struct State: Equatable, Codable {
+public struct Classroom: Reducer {
+    public init () {}
+    
+    public struct State: Equatable, Codable {
         var lessons: IdentifiedArrayOf<Lesson.State> = []
         var selected: Lesson.State.ID? = nil
         var directory: Directory.State? = nil
         
         @BindingState var isDirectoryOpen = false
+        
+        public init(lessons: IdentifiedArrayOf<Lesson.State> = [], selected: Lesson.State.ID? = nil, directory: Directory.State? = nil, isDirectoryOpen: Bool = false) {
+            self.lessons = lessons
+            self.selected = selected
+            self.directory = directory
+            self.isDirectoryOpen = isDirectoryOpen
+        }
     }
     
-    enum Action: BindableAction, Equatable {
+    public enum Action: BindableAction, Equatable {
         case task
         case lesson(id: UUID, action: Lesson.Action)
         case select(id: UUID)
@@ -23,7 +32,7 @@ struct Classroom: Reducer {
     
     @Dependency(\.defaults) var defaults: UserDefaultsClient
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         BindingReducer()
         Reduce { state, action in
             switch action {
