@@ -28,6 +28,10 @@ public extension Verse {
     static var mock: Self {
         .init(id: 1, book: .genesis, chapterId: 1, verseId: 1, verse: "In the beginning God created the heavens and the earth.")
     }
+    
+    static var wept: Self {
+        .init(id: 2, book: .john, chapterId: 11, verseId: 35, verse: "Jesus wept.")
+    }
 }
 
 public extension Array where Element == Verse {
