@@ -14,45 +14,56 @@ public struct ClassroomView: View {
     }
     
     public var body: some View {
-        List {
-            ForEachStore(
-                store.scope(
-                    state: \.lessons,
-                    action: Classroom.Action.lesson(id:action:)
-                ),
-                content: { store in
-                    Text("foo")
-                }
-            )
-        }
-        .navigationDestination(for: Lesson.State.self, destination: { lesson in
-            Text("foo")
-        })
-        .listStyle(.inset)
-        .navigationTitle("Classroom")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    store.send(.openDirectory)
-                } label: {
-                    Text("Add")
-                }
-            }
-        }
-        .popover(isPresented: viewStore.$isDirectoryOpen, content: {
-            IfLetStore(
-                store.scope(
-                    state: \.directory,
-                    action: Classroom.Action.directory
-                ), then: { store in
-                    NavigationStack {
-                        DirectoryView(store: store)
+        
+        NavigationStackStore(store.scope(state: \.path, action: Classroom.Action.path)) {
+            List {
+                ForEach(viewStore.lessons) { lesson in
+                    Button {
+                        viewStore.send(.select(id: lesson.id))
+                    } label: {
+                        Text(lesson.id.description)
                     }
                 }
-            ) {
-                ProgressView()
             }
-        })
+            .listStyle(.inset)
+            .navigationTitle("Classroom")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        store.send(.openDirectory)
+                    } label: {
+                        Text("Add")
+                    }
+                }
+            }
+            .popover(isPresented: viewStore.$isDirectoryOpen, content: {
+                IfLetStore(
+                    store.scope(
+                        state: \.directory,
+                        action: Classroom.Action.directory
+                    ), then: { store in
+                        NavigationStack {
+                            DirectoryView(store: store)
+                        }
+                    }
+                ) {
+                    ProgressView()
+                }
+            })
+        } destination: { store in
+            switch store {
+            case .lesson:
+                CaseLet(
+                    /Classroom.Path.State.lesson,
+                     action: Classroom.Path.Action.lesson,
+                     then: LessonView.init(store:)
+                )
+                .navigationBarBackButtonHidden()
+                // case .message(let text):
+                //    Text(text)
+                
+            }
+        }
     }
 }
 
@@ -60,7 +71,9 @@ struct ClassroomView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ClassroomView(
-                store: Store(initialState: Classroom.State()) {
+                store: Store(initialState: Classroom.State(
+                    lessons: [.init(verses: .mock)]
+                )) {
                     Classroom()
                 }
             )

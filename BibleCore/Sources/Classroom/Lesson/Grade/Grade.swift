@@ -12,15 +12,10 @@ public struct Grade: Reducer {
     }
     
     public enum Action: Equatable {
-        case next
+        case didPressButton
     }
     
     public var body: some ReducerOf<Self> {
-        Reduce { state, action in
-            switch action {
-            case .next:
-                return .none
-            }
-        }
+        Reduce { state, action in .none }
     }
 }

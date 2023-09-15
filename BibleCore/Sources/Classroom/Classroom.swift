@@ -4,12 +4,29 @@ import Foundation
 import UserDefaultsClient
 
 public struct Classroom: Reducer {
+    public struct Path: Reducer {
+        public enum State: Equatable, Codable {
+            case lesson(Lesson.State)
+        }
+        
+        public enum Action: Equatable {
+            case lesson(Lesson.Action)
+        }
+        
+        public var body: some ReducerOf<Self> {
+            Scope(state: /State.lesson, action: /Action.lesson) {
+                Lesson()
+            }
+        }
+    }
+    
     public init () {}
     
     public struct State: Equatable, Codable {
         var lessons: IdentifiedArrayOf<Lesson.State> = []
         var selected: Lesson.State.ID? = nil
         var directory: Directory.State? = nil
+        var path = StackState<Path.State>()
         
         @BindingState var isDirectoryOpen = false
         
@@ -28,6 +45,7 @@ public struct Classroom: Reducer {
         case openDirectory
         case directory(Directory.Action)
         case binding(_ action: BindingAction<State>)
+        case path(StackAction<Path.State, Path.Action>)
     }
     
     @Dependency(\.defaults) var defaults: UserDefaultsClient
@@ -40,6 +58,7 @@ public struct Classroom: Reducer {
                 return .none
             case .select(id: let id):
                 state.selected = id
+                state.path.append(.lesson(state.lessons[id: id]!))
                 return .none
             case .lesson:
                 return .none
@@ -70,13 +89,19 @@ public struct Classroom: Reducer {
                 return .none
             case .binding:
                 return .none
+            case .path:
+                return .none
             }
         }
         .ifLet(\.directory, action: /Action.directory) {
             Directory()
         }
-        .forEach(\.lessons, action: /Action.lesson) {
-            Lesson()
+        .forEach(\.path, action: /Action.path) {
+            Path()
         }
+        // MARK: - pretty sure I don't need this
+//        .forEach(\.lessons, action: /Action.lesson) {
+//            Lesson()
+//        }
     }
 }

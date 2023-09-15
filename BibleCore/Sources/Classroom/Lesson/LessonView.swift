@@ -21,7 +21,9 @@ struct LessonView: View {
                 .controlSize(.large)
                 .foregroundColor(.black)
                 
-                ProgressBar(progress: 0)
+                WithViewStore(store, observe: \.score) {
+                    ProgressBar(progress: $0.state)
+                }
 
             }
             .padding(.horizontal)
@@ -32,13 +34,19 @@ struct LessonView: View {
             ) {
                 ProgressView()
                     .progressViewStyle(.circular)
-                    .frame(maxHeight: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }
+            .transition(
+                .asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                )
+                .combined(with: .opacity)
+            )
             
             Spacer()
             
             GradeView(store: store.scope(state: \.grade, action: Lesson.Action.grade))
-                .transaction { $0.animation = nil }
         }
         .onAppear {
             store.send(.prepare)

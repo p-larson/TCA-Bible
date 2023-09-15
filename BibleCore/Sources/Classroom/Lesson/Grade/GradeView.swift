@@ -55,6 +55,17 @@ fileprivate extension String {
         default: return String()
         }
     }
+    
+    static func text(for grade: Grade.State) -> String {
+        switch grade {
+        case .correct:
+            return "Next"
+        case .ready:
+            return "Check"
+        default:
+            return "Check"
+        }
+    }
 }
 
 struct GradeView: View {
@@ -68,18 +79,20 @@ struct GradeView: View {
                     .fontWeight(.bold)
                     .foreground(for: initialState)
                     .hidden(for: initialState)
-                Button("check") {
-                    store.send(.next)
+                    .transition(.move(edge: .bottom))
+                Button(String.text(for: initialState)) {
+                    store.send(.didPressButton, animation: .easeOut(duration: 0.3))
                 }
                 .buttonStyle(for: initialState)
+                .transaction { $0.animation = nil }
             }
             .padding()
             .background {
                 switch initialState {
                 case .correct:
                     Color.softGreen
-                        .transition(.move(edge: .bottom))
                         .edgesIgnoringSafeArea(.bottom)
+                        .transition(.move(edge: .bottom))
                 default:
                     EmptyView()
                 }
@@ -90,17 +103,30 @@ struct GradeView: View {
 
 struct GradeView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach(
-            [Grade.State.correct, Grade.State.ready, Grade.State.disabled],
-            id: \.self
-        ) { grade in
-            VStack {
-                Spacer()
-                GradeView(store: Store(initialState: grade) {
-                    Grade()
-                        ._printChanges()
-                })
-            }
+        
+        VStack {
+            Spacer()
+            GradeView(store: Store(initialState: .correct) {
+                Reduce<Grade.State, Grade.Action> { state, action in
+                    
+//                    state = .disabled
+                    
+                    return .none
+                }
+            })
+        }
+        
+        
+        VStack {
+            Spacer()
+            GradeView(store: Store(initialState: .ready) {
+                Reduce<Grade.State, Grade.Action> { state, action in
+                    
+                    state = .correct
+                    
+                    return .none
+                }
+            })
         }
     }
 }
