@@ -30,6 +30,10 @@ public extension Book {
     static var leviticus: Self {
         .init(id: 3, name: "Leviticus", testament: "ot")
     }
+    
+    static var john: Self {
+        .init(id: 43, name: "John", testament: "nt")
+    }
 }
 
 public extension Array where Element == Book {

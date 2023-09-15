@@ -1,15 +1,27 @@
 import ComposableArchitecture
 import BibleCore
 import BibleClient
+import Foundation
 
-public struct Piecemeal: Reducer {
+public struct BuildByWord: Reducer {
     public init() {}
     
-    public struct State: Equatable, Codable {
+    public struct State: Equatable, Codable, Hashable, ExerciseProtocol {
+        
+        public struct Guess: Equatable, Identifiable, Codable, Hashable {
+            let word: String
+            public let id: UUID
+            
+            init(word: String, id: UUID) {
+                self.word = word
+                self.id = id
+            }
+        }
+        
         var verses: [Verse]? = nil
         var error: ClassroomError? = nil
-        var wordBank = [String]()
-        var answer = [String]()
+        var wordBank = IdentifiedArrayOf<Guess>()
+        var answer = IdentifiedArrayOf<Guess>()
         
         var correctAnswer: [String] {
             guard let verses = verses else {
@@ -27,10 +39,12 @@ public struct Piecemeal: Reducer {
                 return false
             }
             
-            return correctAnswer.elementsEqual(answer)
+            return correctAnswer.elementsEqual(answer.map(\.word))
         }
         
-        public struct ClassroomError: Equatable, Codable {
+        var score: Int { 0 }
+        
+        public struct ClassroomError: Equatable, Codable, Hashable {
             let title, message: String
             
             init(title: String, message: String) {
@@ -44,12 +58,7 @@ public struct Piecemeal: Reducer {
             )
         }
         
-        init(
-            verses: [Verse]? = nil,
-            error: ClassroomError? = nil,
-            wordBank: [String] = [String](),
-            answer: [String] = [String]()
-        ) {
+        init(verses: [Verse]? = nil, error: ClassroomError? = nil, wordBank: IdentifiedArrayOf<Guess> = IdentifiedArrayOf<Guess>(), answer: IdentifiedArrayOf<Guess> = IdentifiedArrayOf<Guess>()) {
             self.verses = verses
             self.error = error
             self.wordBank = wordBank
@@ -61,12 +70,12 @@ public struct Piecemeal: Reducer {
         case task
         case setup([Verse])
         case failedSetup(error: State.ClassroomError)
-        case guess(index: Int)
-        case check
-        case didComplete
+        case guess(id: UUID)
+        case remove(id: UUID)
     }
     
     @Dependency(\.bible) var bible: BibleClient
+    @Dependency(\.uuid) var uuid
     @Dependency(\.withRandomNumberGenerator) var withRandomNumberGenerator
     
     public var body: some ReducerOf<Self> {
@@ -77,9 +86,8 @@ public struct Piecemeal: Reducer {
                 // we want to go fetch a random verse to start learning from.
                 
                 guard state.verses == nil else {
-                    return .none
+                    return .send(.setup(state.verses!))
                 }
-                
                 
                 // Grab a random verse to learn
                 return .run { send in
@@ -103,9 +111,12 @@ public struct Piecemeal: Reducer {
             case .setup(let verses):
                 state.verses = verses
                 
-                state.wordBank = withRandomNumberGenerator {
-                    state.correctAnswer.shuffled(using: &$0)
-                }
+                state.wordBank = IdentifiedArray(uniqueElements: withRandomNumberGenerator { (generator) -> [State.Guess] in
+                    return state.correctAnswer.shuffled(using: &generator).map { (word) -> State.Guess in
+                        return State.Guess.init(word: word, id: uuid())
+                    }
+                })
+                
                 state.answer = []
                 
                 return .none
@@ -114,20 +125,11 @@ public struct Piecemeal: Reducer {
                 state.error = error
                 
                 return .none
-            case .guess(let index):
-                let guess = state.wordBank.remove(at: index)
-                
-                state.answer.append(guess)
-                
+            case .guess(let id):
+                state.answer.append(state.wordBank.remove(id: id)!)
                 return .none
-            case .check:
-                if state.isCorrect {
-                    return .send(.didComplete)
-                }
-                
-                return .none
-            case .didComplete:
-                print("Hazzah!")
+            case .remove(let id):
+                state.wordBank.append(state.answer.remove(id: id)!)
                 return .none
             }
         }

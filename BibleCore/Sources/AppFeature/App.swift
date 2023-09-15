@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import ReaderCore
+import Classroom
 
 public struct AppReducer: Reducer {
     
@@ -8,15 +9,17 @@ public struct AppReducer: Reducer {
         
         
         public enum State: Equatable {
-            case reader(Reader.State = .init())
-            case empty
+            case classroom(Classroom.State = .init())
         }
         
         public enum Action: Equatable {
-            case reader(Reader.Action)
+            case classroom(Classroom.Action)
         }
         
         public var body: some ReducerOf<Self> {
+            Scope(state: /State.classroom, action: /Action.classroom) {
+                Classroom()
+            }
             Reduce { state, action in .none }
         }
     }
@@ -66,7 +69,7 @@ public struct AppReducer: Reducer {
             case .tabSelected(let tab):
                 
                 if tab == .read {
-                    state.path.append(.empty)
+                    state.path.append(.classroom())
                 }
                 
                 return .none
